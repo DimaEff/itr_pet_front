@@ -1,30 +1,79 @@
 import React, {useState} from 'react';
-
-import Auth from "./components/auth";
 import {useAuth0} from "@auth0/auth0-react";
 import axios from "axios";
+
+import Auth from "./components/auth";
 
 
 function App() {
     const {user, getAccessTokenSilently} = useAuth0();
 
-    const [t, setT] = useState<string>('test');
+    const baseUrl = process.env.REACT_APP_SERVER_URL;
 
-    const showToken = async () => {
-        // const t = await getAccessTokenSilently();
-        const t = await getAccessTokenSilently();
-        setT(t);
-    }
+    const [users, setUsers] = useState<any[]>([]);
 
-    const request = async () => {
+    const getAllUsers = async () => {
+        const token = await getAccessTokenSilently();
+        if (!token) return;
 
-        const url = `${process.env.REACT_APP_SERVER_URL}/cats`;
-        console.log(url);
-        const res = await axios.post(url,
-            {name: 'Lisa', age: 4, breed: 'afsdvfb'},
+        const res = await axios.get(
+            baseUrl + '/admin/users',
             {
                 headers: {
-                    Authorization: `Bearer ${t}`
+                    authorization: `Bearer ${token}`,
+                }
+            }
+        );
+        console.log(res.data);
+        setUsers(res.data);
+    }
+
+    const testFetch = async () => {
+        const token = await getAccessTokenSilently();
+        if (!token) return;
+
+        const res = await axios.put(
+            baseUrl + '/users/update',
+            {data: {name: 'Dima'}},
+            {
+                headers: {
+                    authorization: `Bearer ${token}`,
+                }
+            }
+        );
+        console.log(res.data)
+    }
+
+    const setBlockUser = async (uid: string, isBlocked: boolean) => {
+        const token = await getAccessTokenSilently();
+        if (!token) return;
+
+        const res = await axios.put(
+            baseUrl + '/admin/users/block',
+            {uid, isBlocked},
+            {
+                headers: {
+                    authorization: `Bearer ${token}`,
+                }
+            }
+        );
+        console.log(res.data);
+    }
+
+    const showToken = async () => {
+        const token = await getAccessTokenSilently();
+        console.log(token);
+    }
+
+    const deleteUser = async (uid: string) => {
+        const token = await getAccessTokenSilently();
+        if (!token) return;
+
+        const res = await axios.delete(
+            baseUrl + `/admin/users/${uid}`,
+            {
+                headers: {
+                    authorization: `Bearer ${token}`,
                 }
             }
         );
@@ -35,10 +84,34 @@ function App() {
         <div>
             <div>Name: {user?.name}</div>
             <div>Email: {user?.email}</div>
+            <div>Nickname: {user?.nickname}</div>
             <Auth/>
-            <div>{t}</div>
-            <button onClick={showToken}>token</button>
-            <button onClick={request}>request</button>
+            <button onClick={testFetch}>Set new name</button>
+            <button onClick={showToken}>Show token</button>
+            <button onClick={getAllUsers}>Fetch users</button>
+
+            <div>
+                {users.map(u => <div style={{border: '1px solid', borderColor: u.blocked ? 'red': 'green'}}>
+                    <span>{u.user_id}</span>
+                    <span>{u.name}</span>
+                    <span>{u.blocked}</span>
+                    {
+                        u.blocked ?
+                            <button
+                                onClick={() => setBlockUser(u.user_id, false)}
+                            >
+                                Unblock user
+                            </button>:
+                            <button
+                                onClick={() => setBlockUser(u.user_id, true)}
+                            >
+                                Block user
+                            </button>
+                    }
+                    <button onClick={() => deleteUser(u.user_id)}>Delete user</button>
+                </div>)}
+            </div>
+
         </div>
     );
 }
