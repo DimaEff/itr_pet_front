@@ -1,38 +1,29 @@
-import * as React from 'react';
-import {ThemeProvider, createTheme} from '@mui/material/styles';
-import {PaletteMode} from "@mui/material";
+import React, {createContext, useState} from 'react';
+import {ThemeProvider} from '@mui/material/styles';
+import {observer} from "mobx-react-lite";
 
-import {Button} from "./components/components/common/Buttons";
-import {Container} from "./components/components/common/Containers";
+import {useTheme, useTokenForRequests, useUserRoles} from './hooks';
+import {adminStore} from './store';
+import {Container, AppWrapper} from "./components/components/common/Containers";
 import {Header} from "./components/components/Header";
-import AppWrapper from "./components/components/common/Containers/AppWrapper";
+import {Button} from "./components/components/common/Buttons";
 
 
-export const ColorModeContext = React.createContext({
+export const ColorModeContext = createContext({
     toggleColorMode: () => {
     }
 });
 
 const App = () => {
-    const [mode, setMode] = React.useState<PaletteMode>('light');
-    const colorMode = React.useMemo(
-        () => ({
-            toggleColorMode: () => {
-                setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
-            },
-        }),
-        [],
-    );
+    useTokenForRequests();
+    const {colorMode, theme} = useTheme();
+    const getRoles = useUserRoles();
 
-    const theme = React.useMemo(
-        () =>
-            createTheme({
-                palette: {
-                    mode,
-                },
-            }),
-        [mode],
-    );
+    const fetchUsers = async () => {
+        await adminStore.setAllUsers();
+        // const roles = await getRoles();
+        // console.log(roles);
+    }
 
     return (
         <ColorModeContext.Provider value={colorMode}>
@@ -40,9 +31,17 @@ const App = () => {
                 <AppWrapper>
                     <Header/>
                     <Container>
-                        <Button>
-                            Test
+                        <Button onClick={fetchUsers}>
+                            Get all users
                         </Button>
+                        {adminStore.users.map(u => <div key={u.user_id}>
+                            <Button onClick={() => console.log(u.user_id)}>
+                                {u.user_id}
+                            </Button>
+                            <span>{u.name}</span>|
+                            <span>{u.email}</span>|
+                            <span>{u.nickname}</span>
+                        </div>)}
                     </Container>
                 </AppWrapper>
             </ThemeProvider>
@@ -50,4 +49,4 @@ const App = () => {
     );
 }
 
-export default App;
+export default observer(App);
