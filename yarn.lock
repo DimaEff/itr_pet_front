@@ -9485,7 +9485,7 @@ react-refresh@^0.8.3:
 
 react-router-dom@^6.0.2:
   version "6.0.2"
-  resolved "https://registry.npmjs.org/react-router-dom/-/react-router-dom-6.0.2.tgz"
+  resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-6.0.2.tgz#860cefa697b9d4965eced3f91e82cdbc5995f3ad"
   integrity sha512-cOpJ4B6raFutr0EG8O/M2fEoyQmwvZWomf1c6W2YXBZuFBx8oTk/zqjXghwScyhfrtnt0lANXV2182NQblRxFA==
   dependencies:
     history "^5.1.0"

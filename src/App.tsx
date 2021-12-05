@@ -1,12 +1,15 @@
-import React, {createContext, useState} from 'react';
+import React, {createContext} from 'react';
+import {Alert, Box} from '@mui/material';
 import {ThemeProvider} from '@mui/material/styles';
 import {observer} from "mobx-react-lite";
+import {Link} from 'react-router-dom';
 
 import {useTheme, useTokenForRequests, useUserRoles} from './hooks';
 import {adminStore} from './store';
 import {Container, AppWrapper} from "./components/components/common/Containers";
 import {Header} from "./components/components/Header";
 import {Button} from "./components/components/common/Buttons";
+import AppRouter from "./appRouter/AppRouter";
 
 
 export const ColorModeContext = createContext({
@@ -17,12 +20,11 @@ export const ColorModeContext = createContext({
 const App = () => {
     useTokenForRequests();
     const {colorMode, theme} = useTheme();
-    const getRoles = useUserRoles();
+    const roles = useUserRoles();
 
     const fetchUsers = async () => {
-        await adminStore.setAllUsers();
-        // const roles = await getRoles();
-        // console.log(roles);
+        // await adminStore.setAllUsers();
+        console.log(roles);
     }
 
     return (
@@ -31,6 +33,11 @@ const App = () => {
                 <AppWrapper>
                     <Header/>
                     <Container>
+                        <Box>
+                            <Link to={'/'}>Home</Link>
+                            <Link to={'admin'}>Admin</Link>
+                        </Box>
+                        <AppRouter />
                         <Button onClick={fetchUsers}>
                             Get all users
                         </Button>

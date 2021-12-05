@@ -1,19 +1,24 @@
 import {useAuth0} from "@auth0/auth0-react";
+import {useEffect, useState} from "react";
 
 
-const useUserRoles = (): () => Promise<string[] | null> => {
+const useUserRoles = (): string[] => {
     const {isAuthenticated, getIdTokenClaims} = useAuth0();
+    const [roles, setRoles] = useState([]);
 
-    return async (): Promise<string[] | null> => {
-        if (!isAuthenticated) {
-            return null;
+    useEffect(() => {
+        const getRoles = async () => {
+            const key = process.env.REACT_APP_AUTH0_AUDIENCE + '/roles';
+            const idTokenClaims = await getIdTokenClaims();
+            setRoles(idTokenClaims[key]);
+        };
+
+        if (isAuthenticated) {
+            getRoles();
         }
+    }, [isAuthenticated]);
 
-        const key = process.env.REACT_APP_AUTH0_AUDIENCE + '/roles';
-        const idTokenClaims = await getIdTokenClaims();
-
-        return idTokenClaims[key];
-    };
+    return roles;
 }
 
 export default useUserRoles;
