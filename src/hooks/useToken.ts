@@ -1,14 +1,21 @@
 import {useAuth0} from "@auth0/auth0-react";
 import axios from "axios";
+import {useEffect} from "react";
 
 
 const useTokenForRequests = () => {
     const {isAuthenticated, getAccessTokenSilently} = useAuth0();
-    if (isAuthenticated) {
-        getAccessTokenSilently()
-            .then(t => axios.defaults.headers.common['Authorization'] = `Bearer ${t}`);
 
-    }
+    useEffect(() => {
+        const addToken = async () => {
+            const token = await getAccessTokenSilently();
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        }
+
+        if (isAuthenticated) {
+            addToken();
+        }
+    }, [isAuthenticated])
 
     // axios.interceptors.request.use(async (request) => {
     //     if (isAuthenticated && request.headers) {

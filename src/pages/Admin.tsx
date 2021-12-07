@@ -1,13 +1,16 @@
-import React from 'react';
-import {Link} from "react-router-dom";
+import React, {FC} from 'react';
+import {Link, Outlet} from "react-router-dom";
 
 
-const Admin = () => {
+const Admin: FC = ({children}) => {
     return (
         <div>
-            <Link to={'users'}>Test</Link>
-            <Link to={'events'}>Test</Link>
-            Admin
+            <div>
+                <Link to={'users'}>Test</Link>
+                <Link to={'events'}>Test</Link>
+                Admin
+            </div>
+            <Outlet />
         </div>
     );
 };

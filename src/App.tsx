@@ -1,15 +1,16 @@
 import React, {createContext} from 'react';
-import {Alert, Box} from '@mui/material';
+import {Box} from '@mui/material';
 import {ThemeProvider} from '@mui/material/styles';
 import {observer} from "mobx-react-lite";
-import {Link} from 'react-router-dom';
+import {Link, useRoutes} from 'react-router-dom';
 
-import {useTheme, useTokenForRequests, useUserRoles} from './hooks';
+import {useMenu, useRoles, useTheme, useTokenForRequests} from './hooks';
 import {adminStore} from './store';
-import {Container, AppWrapper} from "./components/components/common/Containers";
-import {Header} from "./components/components/Header";
-import {Button} from "./components/components/common/Buttons";
-import AppRouter from "./appRouter/AppRouter";
+import {getRoutes} from './routing';
+import {Container, AppWrapper} from "./components/common/Containers";
+import {Header} from "./components/Header";
+import {Button} from "./components/common/Buttons";
+import {useAuth0} from "@auth0/auth0-react";
 
 
 export const ColorModeContext = createContext({
@@ -18,13 +19,19 @@ export const ColorModeContext = createContext({
 });
 
 const App = () => {
+    const mainMenuRoutes = useMenu(['main']);
+    const allMenuRoutes = useMenu();
+
+    const {isAuthenticated} = useAuth0();
+    const {isAdmin} = useRoles()
+
+    const routes = useRoutes(getRoutes(isAuthenticated, isAdmin));
+
     useTokenForRequests();
     const {colorMode, theme} = useTheme();
-    const roles = useUserRoles();
 
     const fetchUsers = async () => {
         // await adminStore.setAllUsers();
-        console.log(roles);
     }
 
     return (
@@ -34,10 +41,10 @@ const App = () => {
                     <Header/>
                     <Container>
                         <Box>
-                            <Link to={'/'}>Home</Link>
-                            <Link to={'admin'}>Admin</Link>
+                            {mainMenuRoutes.map(r => <Link to={r.path}>{r.label}</Link>)}
+                            {allMenuRoutes.map(r => <Link to={r.path}>{r.label}</Link>)}
                         </Box>
-                        <AppRouter />
+                        {routes}
                         <Button onClick={fetchUsers}>
                             Get all users
                         </Button>

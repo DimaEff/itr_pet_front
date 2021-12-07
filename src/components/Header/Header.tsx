@@ -1,16 +1,14 @@
 import * as React from 'react';
 import {AppBar, Toolbar, Container, Typography} from '@mui/material';
 import {useAuth0} from "@auth0/auth0-react";
-import ExitToAppRoundedIcon from '@mui/icons-material/ExitToAppRounded';
 
 import ToggleTheme from "./ToggleColorMode";
-import UserProfile from "./UserProfile";
 import {Loader} from "../common/Loader";
-import {IconButton} from "../common/Buttons";
+import Auth from "./Auth";
 
 
 const ResponsiveAppBar = () => {
-    const {isAuthenticated, isLoading, loginWithPopup} = useAuth0();
+    const {isLoading} = useAuth0();
 
     return (
         <AppBar position="static" sx={{boxShadow: 'none'}}>
@@ -26,13 +24,9 @@ const ResponsiveAppBar = () => {
                         Interesting Map
                     </Typography>
                     <ToggleTheme/>
-                    {isLoading && <Loader secondary/>}
-                    {
-                        isAuthenticated ?
-                            <UserProfile/>:
-                            <IconButton onClick={loginWithPopup}>
-                                <ExitToAppRoundedIcon fontSize={'large'}/>
-                            </IconButton>
+                    {isLoading ?
+                        <Loader secondary/>:
+                        <Auth />
                     }
                 </Toolbar>
             </Container>

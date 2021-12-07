@@ -1,21 +1,21 @@
-import React, {FC, useState, MouseEvent} from 'react';
+import React, {FC, MouseEvent, useState} from 'react';
 import {Avatar, Box, Menu, MenuItem, Tooltip, Typography} from "@mui/material";
 import {useAuth0} from "@auth0/auth0-react";
+
+import {useMenu} from '../../hooks';
+import {Menus} from '../../routing';
 import {IconButton} from "../common/Buttons";
 
 
 interface UserProfileProps {
-
 }
-
-const settings = [
-    'Profile',
-    'Settings',
-];
 
 const UserProfile: FC<UserProfileProps> = () => {
     const {user, logout} = useAuth0();
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+
+    // const userRoutes = useMenu();
+    // const adminRoutes = useMenu([Menus.Admin]);
 
     const handleOpen = (e: MouseEvent<HTMLElement>) => {
         setAnchorElUser(e.currentTarget);
@@ -48,11 +48,6 @@ const UserProfile: FC<UserProfileProps> = () => {
                 open={Boolean(anchorElUser)}
                 onClose={handleClose}
             >
-                {settings.map((setting) => (
-                    <MenuItem key={setting} onClick={handleClose}>
-                        <Typography textAlign="center">{setting}</Typography>
-                    </MenuItem>
-                ))}
                 <MenuItem onClick={() => logout({ returnTo: window.location.origin })}>
                     <Typography textAlign="center">Log Out</Typography>
                 </MenuItem>

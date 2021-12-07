@@ -1,10 +1,15 @@
-import {useAuth0} from "@auth0/auth0-react";
 import {useEffect, useState} from "react";
+import {useAuth0} from "@auth0/auth0-react";
 
 
-const useUserRoles = (): string[] => {
+interface IUseRoles {
+    isAdmin: boolean;
+    roles: string[];
+}
+
+const useRoles = (): IUseRoles => {
     const {isAuthenticated, getIdTokenClaims} = useAuth0();
-    const [roles, setRoles] = useState([]);
+    const [roles, setRoles] = useState<string[]>([]);
 
     useEffect(() => {
         const getRoles = async () => {
@@ -18,7 +23,7 @@ const useUserRoles = (): string[] => {
         }
     }, [isAuthenticated]);
 
-    return roles;
+    return {isAdmin: roles.includes('admin') || roles.includes('testAdmin'), roles};
 }
 
-export default useUserRoles;
+export default useRoles;
