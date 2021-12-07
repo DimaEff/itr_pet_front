@@ -41,8 +41,8 @@ const App = () => {
                     <Header/>
                     <Container>
                         <Box>
-                            {mainMenuRoutes.map(r => <Link to={r.path}>{r.label}</Link>)}
-                            {allMenuRoutes.map(r => <Link to={r.path}>{r.label}</Link>)}
+                            {mainMenuRoutes.map(r => <Link key={r.path} to={r.path}>{r.label}</Link>)}
+                            {allMenuRoutes.map(r => <Link key={r.path} to={r.path}>{r.label}</Link>)}
                         </Box>
                         {routes}
                         <Button onClick={fetchUsers}>

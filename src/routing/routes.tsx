@@ -2,7 +2,7 @@ import React from "react";
 import {RouteObject, Navigate} from 'react-router-dom';
 
 import {Menus, Paths} from './consts';
-import {Admin, Map, Profile} from '../pages';
+import {Admin, Home, Profile} from '../pages';
 
 
 export interface IRoute extends RouteObject{
@@ -17,7 +17,7 @@ const redirectElement = <Navigate to={'/'}/>;
 export const getRoutes = (isAuth: boolean, isAdmin: boolean ): IRoute[] => [
     {
         path: '/',
-        element: <Map/>,
+        element: <Home/>,
         label: 'Главная',
         menuName: 'main',
     },
