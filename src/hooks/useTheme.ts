@@ -1,6 +1,7 @@
 import {useMemo, useState} from "react";
 import {PaletteMode, Theme} from "@mui/material";
 import {createTheme} from "@mui/material/styles";
+import {Palette} from "@mui/icons-material";
 
 
 interface IColorMode {
@@ -13,11 +14,16 @@ interface IUseTheme {
 }
 
 const useTheme = (): IUseTheme => {
-    const [mode, setMode] = useState<PaletteMode>('light');
+    const defaultThemeMode: PaletteMode = localStorage.getItem('theme-mode') === 'dark' ? 'dark': 'light';
+    const [mode, setMode] = useState<PaletteMode>(defaultThemeMode);
     const colorMode = useMemo(
         () => ({
             toggleColorMode: () => {
-                setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+                setMode((prevMode) => {
+                    const mode = prevMode === 'light' ? 'dark' : 'light';
+                    localStorage.setItem('theme-mode', mode);
+                    return mode;
+                });
             },
         }),
         [],
