@@ -1,4 +1,5 @@
 import {MapTypeStyle} from "google-map-react";
+import {ThemeOptions} from "@mui/material";
 
 
 export const MapDarkStyle: MapTypeStyle[] = [
@@ -278,4 +279,8 @@ export const MapLightStyle: MapTypeStyle[] = [
             }
         ]
     }
-]
+];
+
+export const getIconModeColor = (theme: ThemeOptions): object => ({
+    color: theme.palette?.mode === 'dark' ? '#f39a1c': '#000',
+});

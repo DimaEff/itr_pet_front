@@ -1,5 +1,11 @@
 import {useEffect, useState} from "react";
+import {Coords} from "google-map-react";
 
+
+interface IUseUserLocation {
+    coords: Coords;
+    isAllowedLocation: boolean;
+}
 
 const positionError = async (): Promise<void> => {
     if (navigator.permissions) {
@@ -12,18 +18,16 @@ const positionError = async (): Promise<void> => {
     }
 }
 
-interface IUserLocation {
-    lat: number;
-    lng: number;
-}
-
-const useUserLocation = (): IUserLocation => {
+const useUserLocation = (): IUseUserLocation => {
     const [lat, setLat] = useState(0);
     const [lng, setLng] = useState(0);
+
+    const [isAllowedLocation, setIsAllowedLocation] = useState(false);
 
     const setPositions = (position: GeolocationPosition) => {
         setLat(position.coords.latitude);
         setLng(position.coords.longitude);
+        setIsAllowedLocation(true);
     }
 
     useEffect(() => {
@@ -38,7 +42,7 @@ const useUserLocation = (): IUserLocation => {
         getPosition();
     }, [])
 
-    return {lat, lng};
+    return {coords: {lat, lng}, isAllowedLocation};
 }
 
 export default useUserLocation;

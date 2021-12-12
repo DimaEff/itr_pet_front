@@ -6,7 +6,7 @@ import AccountBalanceRoundedIcon from '@mui/icons-material/AccountBalanceRounded
 import FastfoodRoundedIcon from '@mui/icons-material/FastfoodRounded';
 import PriorityHighRoundedIcon from '@mui/icons-material/PriorityHighRounded';
 
-import {EventsTypes} from '../../store';
+import {EventsTypes} from '../../../store';
 
 
 interface EventIconProps {
