@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useState} from 'react';
 import {
     Card,
     CardActions,
@@ -9,6 +9,7 @@ import {
 import {Button} from "../../common/Buttons";
 import AddEventImage from "./AddEventImage";
 import AddEventForm from "./AddEventForm";
+import AddedImages from "./AddedImages";
 
 
 interface AddEventProps {
@@ -16,30 +17,45 @@ interface AddEventProps {
     setOpen: (isOpen: boolean) => void;
 }
 
-const AddEventModal: FC<AddEventProps> = ({open, setOpen}) => {
+export type AddedImg = [string, File];
 
+const AddEventModal: FC<AddEventProps> = ({open, setOpen}) => {
+    const [images, setImages] = useState<AddedImg[]>([]);
+
+    const handleAddEvent = (data: any) => {
+        console.log(data);
+        console.log(images.map(i => i[1]));
+    }
+
+    const onClose = () => {
+        setImages([]);
+        setOpen(false);
+    }
+
+    const formId = 'event';
 
     return (
         <Modal
             open={open}
-            onClose={() => setOpen(false)}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
+            onClose={onClose}
         >
             <Card sx={{
-                maxWidth: 360, position: 'absolute',
+                width: '95%',
+                maxWidth: 360,
+                position: 'absolute',
                 top: '50%',
                 left: '50%',
                 transform: 'translate(-50%, -50%)',
             }}>
-                <AddEventImage/>
+                <AddEventImage setImages={setImages}/>
                 <CardContent>
-                    <AddEventForm/>
+                    <AddEventForm formId={formId} onAddEvent={handleAddEvent}/>
                 </CardContent>
                 <CardActions sx={{width: '100%', display: 'flex', justifyContent: 'flex-end', pr: 2}}>
                     <Button>Cancel</Button>
-                    <Button>Add</Button>
+                    <Button form={formId} type={'submit'}>Add</Button>
                 </CardActions>
+                <AddedImages images={images} setImages={setImages}/>
             </Card>
         </Modal>
     );

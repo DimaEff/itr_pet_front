@@ -15,10 +15,16 @@ const ContainerAbove: FC = ({children}) => {
             }}
             onMouseEnter={() => setOpen(true)}
             onDragEnter={() => setOpen(true)}
+            // onPointerEnter={() => setOpen(true)}
+            // onPointerUp={() => setOpen(true)}
+            // onPointerDown={() => setOpen(true)}
+            // onPointerOut={() => setOpen(true)}
+            onPointerOver={() => setOpen(true)}
         >
             {open && <Box
                 onMouseLeave={() => setOpen(false)}
                 onDragLeave={() => setOpen(false)}
+                onPointerLeave={() => setOpen(false)}
                 sx={{
                     position: 'absolute',
                     top: 0,

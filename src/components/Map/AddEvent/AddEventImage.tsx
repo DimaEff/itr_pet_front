@@ -1,39 +1,44 @@
-import React, {useCallback, useRef, useState} from 'react';
+import React, {FC, useCallback, useRef, useState} from 'react';
 import {Box, CardMedia} from "@mui/material";
 import Webcam from "react-webcam";
-import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import CameraAltRoundedIcon from "@mui/icons-material/CameraAltRounded";
+import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
+import HighlightOffRoundedIcon from '@mui/icons-material/HighlightOffRounded';
 
+import {AddedImg} from './AddEventModal';
 import {ContainerAbove} from "../../common/Containers";
 import FileInput from "../../common/Form/FileInput";
-import {base64toFile, convertToBase64, getFileUrl} from "../../../utils/helper";
+import {base64toFile, getFileUrl} from "../../../utils/helper";
 
 
-type AddedImg = [string, File];
+interface AddEventImagesProps<T> {
+    setImages: (img: T[] | ((imgs: T[]) => T[])) => void;
+}
 
-const AddEventImage = () => {
+const AddEventImage: FC<AddEventImagesProps<AddedImg>> = ({setImages}) => {
     const camRef = useRef<any>(null);
-    const [images, setImages] = useState<AddedImg[]>([]);
+    const [currentPhoto, setCurrentPhoto] = useState<string | null>(null);
 
     const addImages = (images: AddedImg[]) => {
         setImages(imgs => [...imgs, ...images]);
     }
 
-    const deleteImage = (imageUrl: string) => {
-        setImages(imgs => imgs.filter(img => img[0] !== imageUrl));
-    }
-
     const capture = useCallback(async () => {
         const imgSrc = camRef?.current?.getScreenshot();
-        const t = await base64toFile(imgSrc);
-        const url = getFileUrl(t);
-        addImages([imgSrc]);
+        setCurrentPhoto(imgSrc);
     }, [camRef]);
 
+    const confirmCapture = async () => {
+        if (currentPhoto) {
+            const imgFile = await base64toFile(currentPhoto);
+            addImages([[currentPhoto, imgFile]]);
+            setCurrentPhoto(null);
+        }
+    }
+
     const handleLoad = (acceptedFiles: File[]) => {
-        // const base64Images = await Promise.all(acceptedFiles.map(f => convertToBase64(f)));
-        const urlImages: AddedImg[] = acceptedFiles.map(f => [getFileUrl(f), f]);
-        addImages(urlImages);
+        const images: AddedImg[] = acceptedFiles.map(f => [getFileUrl(f), f]);
+        addImages(images);
     }
 
     return (
@@ -42,8 +47,8 @@ const AddEventImage = () => {
         >
             <Box sx={{position: 'relative'}}>
                 {
-                    images.length > 0 ?
-                        <img src={images[0][0]} alt={"event photo"} width={'100%'}/> :
+                    currentPhoto ?
+                        <img src={currentPhoto} alt={"event photo"} width={'100%'}/> :
                         <Webcam
                             ref={camRef}
                             screenshotFormat={'image/jpeg'}
@@ -64,13 +69,13 @@ const AddEventImage = () => {
                             }
                         }}
                     >
-                        {images.length}
                         {
-                            images.length > 0 ?
+                            currentPhoto ?
                                 <>
                                     <Box display={'flex'} justifyContent={'center'} alignItems={'center'} width={'100%'}
                                          height={'100%'}>
-                                        <DeleteRoundedIcon onClick={() => deleteImage('')}/>
+                                        <CheckRoundedIcon onClick={confirmCapture}/>
+                                        <HighlightOffRoundedIcon onClick={() => setCurrentPhoto(null)}/>
                                     </Box>
                                 </> :
                                 <>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {FC, useState} from 'react';
 import {useForm} from "react-hook-form";
 import {Box, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent} from "@mui/material";
 
@@ -7,17 +7,21 @@ import {Form, Input} from "../../common/Form";
 import SelectEventItem from "./SelectEventItem";
 
 
-const AddEventForm = () => {
+interface AddEventFormProps {
+    formId: string;
+    onAddEvent: (data: any) => void;
+}
+
+const AddEventForm: FC<AddEventFormProps> = ({formId, onAddEvent}) => {
     const {register, handleSubmit} = useForm();
 
-    const test = (data: any) => {
-        console.log(data);
+    const [eventType, setEventType] = useState<string>('');
+    const handleSelect = (e: SelectChangeEvent) => {
+        setEventType(e.target.value);
     }
 
-    const [selectedType, setSelectedType] = useState<string>('');
-    const handleSelect = (e: SelectChangeEvent) => {
-        console.log(e.target.value)
-        setSelectedType(e.target.value);
+    const onSubmit = (data: any) => {
+        onAddEvent({...data, eventType});
     }
 
     const testTypes: EventsTypes[] = [
@@ -28,7 +32,7 @@ const AddEventForm = () => {
     ];
 
     return (
-        <Form handleSubmit={handleSubmit(test)}>
+        <Form id={formId} handleSubmit={handleSubmit(onSubmit)}>
             <Box width={'100%'} display={'flex'} justifyContent={'space-between'} alignItems={'center'}
                  p={0}>
                 <Input label="Title" register={register('title')}/>
@@ -37,7 +41,7 @@ const AddEventForm = () => {
                     <Select
                         labelId="event-type-label"
                         id="event-type"
-                        value={selectedType}
+                        value={eventType}
                         label="Event type"
                         onChange={handleSelect}
                     >
