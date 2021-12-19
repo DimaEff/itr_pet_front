@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 
 import {Button} from "../../common/Buttons";
-import AddEventImage from "./AddEventImage/AddEventImage";
+import AddEventImage from "./AddEventImage";
 import AddEventForm from "./AddEventForm";
 
 
