@@ -9,7 +9,7 @@ import {
 import {Button} from "../../common/Buttons";
 import AddEventImage from "./AddEventImage";
 import AddEventForm from "./AddEventForm";
-import AddedImages from "./AddedImages";
+import AddedImages from "./AddedImages/AddedImages";
 
 
 interface AddEventProps {
@@ -21,6 +21,16 @@ export type AddedImg = [string, File];
 
 const AddEventModal: FC<AddEventProps> = ({open, setOpen}) => {
     const [images, setImages] = useState<AddedImg[]>([]);
+
+    const addImages = (images: AddedImg[]) => {
+        setImages(imgs => [...imgs, ...images]);
+    }
+
+    const deleteImages = (imagesUrl: string[]) => {
+        setImages(imgs => imgs
+            .filter(img => !imagesUrl.includes(img[0]))
+        );
+    }
 
     const handleAddEvent = (data: any) => {
         console.log(data);
@@ -47,7 +57,7 @@ const AddEventModal: FC<AddEventProps> = ({open, setOpen}) => {
                 left: '50%',
                 transform: 'translate(-50%, -50%)',
             }}>
-                <AddEventImage setImages={setImages}/>
+                <AddEventImage addImages={addImages}/>
                 <CardContent>
                     <AddEventForm formId={formId} onAddEvent={handleAddEvent}/>
                 </CardContent>
@@ -55,7 +65,7 @@ const AddEventModal: FC<AddEventProps> = ({open, setOpen}) => {
                     <Button>Cancel</Button>
                     <Button form={formId} type={'submit'}>Add</Button>
                 </CardActions>
-                <AddedImages images={images} setImages={setImages}/>
+                <AddedImages images={images} deleteImages={deleteImages}/>
             </Card>
         </Modal>
     );

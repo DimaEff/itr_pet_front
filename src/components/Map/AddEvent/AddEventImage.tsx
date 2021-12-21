@@ -12,19 +12,15 @@ import {base64toFile, getFileUrl} from "../../../utils/helper";
 
 
 interface AddEventImagesProps<T> {
-    setImages: (img: T[] | ((imgs: T[]) => T[])) => void;
+    addImages: (images: AddedImg[]) => void;
 }
 
-const AddEventImage: FC<AddEventImagesProps<AddedImg>> = ({setImages}) => {
+const AddEventImage: FC<AddEventImagesProps<AddedImg>> = ({addImages}) => {
     const camRef = useRef<any>(null);
     const [currentPhoto, setCurrentPhoto] = useState<string | null>(null);
 
-    const addImages = (images: AddedImg[]) => {
-        setImages(imgs => [...imgs, ...images]);
-    }
-
     const capture = useCallback(async () => {
-        const imgSrc = camRef?.current?.getScreenshot();
+        const imgSrc = camRef?.current?.getScreenshot({width: 1920, height: 1280});
         setCurrentPhoto(imgSrc);
     }, [camRef]);
 

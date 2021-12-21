@@ -1,4 +1,4 @@
-import React, {FC, useEffect} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {useDropzone} from 'react-dropzone';
 import {Box} from '@mui/material';
 import DownloadForOfflineRoundedIcon from "@mui/icons-material/DownloadForOfflineRounded";
@@ -26,7 +26,6 @@ const FileInput: FC<FileInputProps> = (
     }) => {
 
     const {getRootProps, getInputProps, acceptedFiles, isDragActive} = useDropzone({
-        onDrop: (acceptedFiles) => console.log(acceptedFiles),
         accept: fileTypes,
         maxFiles: maxFiles,
     });
@@ -37,23 +36,30 @@ const FileInput: FC<FileInputProps> = (
         }
     }, [acceptedFiles]);
 
-    return (
-        <Box sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            border: '4px dashed',
-            borderColor: isDragActive ? '#fff' : '#a59a9a',
-            borderRadius: '20px',
-            width: w || '200px',
-            height: h || '150px',
-            cursor: `pointer`,
+    const [isOpen, setIsOpen] = useState(false);
 
-        }}
-             {...getRootProps()}
+    return (
+        <Box
+            sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                border: '4px dashed',
+                borderColor: (isDragActive || isOpen) ? '#fff' : '#a59a9a',
+                borderRadius: '20px',
+                width: w || '200px',
+                height: h || '150px',
+                cursor: `pointer`,
+                'input': {
+                    zIndex: 1,
+                }
+            }}
+            onMouseEnter={() => setIsOpen(true)}
+            onMouseLeave={() => setIsOpen(false)}
+            {...getRootProps()}
         >
-            <input name={name} {...getInputProps()}/>
             <DownloadForOfflineRoundedIcon/>
+            <input name={name} {...getInputProps()}/>
         </Box>
     );
 };

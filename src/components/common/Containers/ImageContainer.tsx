@@ -57,6 +57,7 @@ const ImageContainer: FC<ImageContainerProps> = (
                     transform: 'translate(-50%, -50%)',
                     maxWidth: '95%',
                     maxHeight: '95%',
+                    minWidth: '320px',
                     'img': {
                         width: '100%',
                         height: '100%',
