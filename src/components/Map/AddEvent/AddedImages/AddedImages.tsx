@@ -1,5 +1,5 @@
 import React, {FC, useState} from 'react';
-import {Accordion, AccordionDetails, AccordionSummary, ImageList, Typography} from "@mui/material";
+import {Accordion, AccordionDetails, AccordionSummary, Badge, ImageList, Typography} from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import {AddedImg} from "../AddEventModal";
@@ -25,27 +25,42 @@ const AddedImages: FC<AddedImagesProps<AddedImg>> = ({images, deleteImages}) => 
 
     const [editMode, setEditMode] = useState(false);
 
+    const handleSetEditMode = (edit: boolean) => {
+        setEditMode(edit);
+        setSelectedImages([]);
+    }
+
+    const handleDeleteImages = () => {
+        deleteImages(selectedImages);
+        setSelectedImages([]);
+        setEditMode(false);
+    }
+
     return (
-        <Accordion sx={{
-            position: 'absolute',
-            width: '100%',
-            bottom: 0,
-            left: 0,
-            maxHeight: '100%',
-            zIndex: 2,
-            overflowY: 'auto',
-        }}>
+        <Accordion
+            sx={{
+                position: 'absolute',
+                width: '100%',
+                bottom: 0,
+                left: 0,
+                maxHeight: '100%',
+                zIndex: 2,
+                overflowY: 'auto',
+            }}
+            onChange={(event, expanded) => expanded && setEditMode(false)}
+        >
             <AccordionSummary expandIcon={<ExpandMoreIcon sx={{transform: 'rotate(180deg)'}}/>}>
-                <Typography>
-                    Added images
-                </Typography>
+                <Badge variant={'middle'} badgeContent={images.length} color={'primary'} showZero>
+                    <Typography>
+                        Added images
+                    </Typography>
+                </Badge>
             </AccordionSummary>
             <ImagesMode
                 editMode={editMode}
                 selectedImages={selectedImages}
-                deleteImages={deleteImages}
-                setEditMode={setEditMode}
-                setSelectedImages={setSelectedImages}
+                deleteImages={handleDeleteImages}
+                setEditMode={handleSetEditMode}
             />
             <AccordionDetails>
                 <ImageList>
@@ -56,6 +71,7 @@ const AddedImages: FC<AddedImagesProps<AddedImg>> = ({images, deleteImages}) => 
                         selectImage={selectImage}
                         removeImage={removeImage}
                         editMode={editMode}
+                        setEditMode={handleSetEditMode}
                     />)}
                 </ImageList>
             </AccordionDetails>

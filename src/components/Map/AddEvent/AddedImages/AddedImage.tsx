@@ -1,6 +1,7 @@
 import React, {FC, useEffect, useState} from 'react';
 import {Box, ImageListItem} from "@mui/material";
 import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
+import { useLongPress } from 'use-long-press';
 
 import {ImageContainer} from "../../../common/Containers";
 
@@ -11,15 +12,17 @@ interface ImageProps {
     selectImage: (img: string) => void;
     removeImage: (img: string) => void;
     editMode: boolean;
+    setEditMode: (mode: boolean) => void;
 }
 
 const AddedImage: FC<ImageProps> = (
     {
         src,
-        selectImage,
         selectedImages,
+        selectImage,
         removeImage,
         editMode,
+        setEditMode,
     }) => {
     const [selected, setSelected] = useState(false);
 
@@ -30,6 +33,7 @@ const AddedImage: FC<ImageProps> = (
     const handleSelectImage = () => {
         if (!editMode) return
 
+        console.log('click')
         if (selected) {
             removeImage(src);
         } else {
@@ -37,12 +41,24 @@ const AddedImage: FC<ImageProps> = (
         }
     }
 
+    const handleLongPress = () => {
+        console.log('long click')
+        if (editMode) {
+            setEditMode(false);
+        } else {
+            setEditMode(true);
+        }
+    }
+
+    const longPressEvent = useLongPress(handleLongPress);
+
     return (
         <ImageListItem
             sx={{
                 position: 'relative',
             }}
             onClick={handleSelectImage}
+            {...longPressEvent}
         >
             <ImageContainer src={src} fullImg={!editMode}/>
             <Box

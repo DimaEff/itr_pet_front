@@ -1,8 +1,41 @@
-import {createTheme} from "@mui/material";
+import {createTheme, PaletteMode} from "@mui/material";
+
+declare module '@mui/material/Badge' {
+    interface BadgePropsVariantOverrides {
+        middle: true;
+    }
+}
 
 
-export const getTheme = (mode: string) => createTheme({
+export const getTheme = (mode: PaletteMode) => createTheme({
     palette: {
-        mode: mode === 'light' ? 'light': 'dark',
+        mode,
     },
+    components: {
+        MuiModal: {
+            styleOverrides: {
+                root: {
+                    '>.MuiPaper-root, >.MuiBox-root': {
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                    }
+                }
+            }
+        },
+        MuiBadge: {
+            variants: [
+                {
+                    props: {variant: 'middle'},
+                    style: {
+                        '.MuiBadge-badge': {
+                            right: -12,
+                            top: '50%',
+                        },
+                    }
+                }
+            ]
+        }
+    }
 });

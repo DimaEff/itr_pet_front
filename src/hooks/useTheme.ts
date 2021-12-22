@@ -2,6 +2,7 @@ import {useMemo, useState} from "react";
 import {PaletteMode, Theme} from "@mui/material";
 import {createTheme} from "@mui/material/styles";
 import {Palette} from "@mui/icons-material";
+import {getTheme} from "../indexStyle";
 
 
 interface IColorMode {
@@ -30,12 +31,7 @@ const useTheme = (): IUseTheme => {
     );
 
     const theme = useMemo(
-        () =>
-            createTheme({
-                palette: {
-                    mode,
-                },
-            }),
+        () => getTheme(mode),
         [mode],
     );
 

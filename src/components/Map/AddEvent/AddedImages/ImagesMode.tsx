@@ -10,46 +10,35 @@ interface ImagesModeProps {
     editMode: boolean;
     setEditMode: (edit: boolean) => void;
     selectedImages: string[];
-    setSelectedImages: (images: string[]) => void;
-    deleteImages: (images: string[]) => void;
+    deleteImages: () => void;
 }
 
 const ImagesMode: FC<ImagesModeProps> = (
     {
         editMode,
         setEditMode,
-        setSelectedImages,
+        selectedImages,
         deleteImages,
-        selectedImages
     }) => {
-    const handleSetEditMode = (edit: boolean) => {
-        setEditMode(edit);
-        setSelectedImages([]);
-    }
-
-    const handleDeleteImages = () => {
-        deleteImages(selectedImages);
-        setSelectedImages([]);
-        setEditMode(false);
-    }
 
     return (
         <AccordionDetails
             sx={{
                 textAlign: 'end',
-            }}>
+            }}
+        >
             {
                 editMode ?
-                    <AccordionDetails>
-                        <Button onClick={() => handleSetEditMode(false)}>
+                    <Box>
+                        <Button onClick={() => setEditMode(false)}>
                             Cancel
                         </Button>
-                        <IconButton disabled={selectedImages.length === 0} onClick={handleDeleteImages}>
+                        <IconButton disabled={selectedImages.length === 0} onClick={deleteImages}>
                             <DeleteRoundedIcon/>
                         </IconButton>
-                    </AccordionDetails> :
+                    </Box> :
                     <Box>
-                        <IconButton onClick={() => handleSetEditMode(true)}>
+                        <IconButton onClick={() => setEditMode(true)}>
                             <EditRoundedIcon/>
                         </IconButton>
                     </Box>

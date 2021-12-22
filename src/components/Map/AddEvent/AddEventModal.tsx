@@ -1,10 +1,5 @@
 import React, {FC, useState} from 'react';
-import {
-    Card,
-    CardActions,
-    CardContent,
-    Modal,
-} from "@mui/material";
+import {Box, Card, CardActions, CardContent, Modal} from "@mui/material";
 
 import {Button} from "../../common/Buttons";
 import AddEventImage from "./AddEventImage";
@@ -49,19 +44,25 @@ const AddEventModal: FC<AddEventProps> = ({open, setOpen}) => {
             open={open}
             onClose={onClose}
         >
-            <Card sx={{
-                width: '95%',
-                maxWidth: 360,
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-            }}>
+            <Card
+                sx={{
+                    width: '95%',
+                    maxWidth: 360,
+                }}
+            >
                 <AddEventImage addImages={addImages}/>
                 <CardContent>
                     <AddEventForm formId={formId} onAddEvent={handleAddEvent}/>
                 </CardContent>
-                <CardActions sx={{width: '100%', display: 'flex', justifyContent: 'flex-end', pr: 2}}>
+                <CardActions
+                    sx={{
+                        width: '100%',
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        pr: 2,
+                        mb: 5,
+                    }}
+                >
                     <Button>Cancel</Button>
                     <Button form={formId} type={'submit'}>Add</Button>
                 </CardActions>

@@ -51,10 +51,6 @@ const ImageContainer: FC<ImageContainerProps> = (
                 onClose={() => setOpen(false)}
             >
                 <Box sx={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
                     maxWidth: '95%',
                     maxHeight: '95%',
                     minWidth: '320px',
