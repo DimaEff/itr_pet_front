@@ -4,7 +4,7 @@ import {useAuth0} from "@auth0/auth0-react";
 
 import {IconButton} from "../common/Buttons";
 import {useMenu} from "../../hooks";
-import {Link} from "react-router-dom";
+import {Link} from "../common/Link";
 
 
 interface UserProfileProps {

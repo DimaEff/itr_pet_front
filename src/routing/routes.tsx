@@ -18,31 +18,31 @@ export const getRoutes = (isAuth: boolean, isAdmin: boolean ): IRoute[] => [
     {
         path: '/',
         element: <Home/>,
-        label: 'Главная',
+        label: 'Home',
         menuName: 'main',
     },
     {
         path: 'admin',
         element: isAdmin ? <Admin/>: redirectElement,
-        label: 'Админ панел',
+        label: 'Admin panel',
         menuName: 'admin',
         children: [
             {
                 path: 'users',
                 element: <div>users</div>,
-                label: 'Пользователи',
+                label: 'User',
             },
             {
                 path: 'events',
                 element: <div>events</div>,
-                label: 'События',
+                label: 'Events',
             },
         ],
     },
     {
         path: 'profile',
         element: isAuth ? <Profile />: redirectElement,
-        label: 'Профиль',
+        label: 'Profile',
         menuName: 'user',
     }
 ];
