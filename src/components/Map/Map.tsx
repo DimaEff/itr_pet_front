@@ -17,7 +17,7 @@ interface MapProps {
 }
 
 const getEventKey = (e: Event) => {
-    return `${e.createdAt}${e.position.lat}${e.position.lng}`;
+    return `${e.createdAt}${e.lat}${e.lng}`;
 }
 
 const Map: FC<MapProps> = forwardRef(({events, center, setCenter, disabled}, ref) => {
@@ -52,7 +52,8 @@ const Map: FC<MapProps> = forwardRef(({events, center, setCenter, disabled}, ref
             events.map(e => <EventMarker
                 key={getEventKey(e)}
                 event={e}
-                {...e.position}
+                lat={e.lat}
+                lng={e.lng}
             />)
             }
             {(mapRef && !disabled) && <UserMarker disabled={disabled} {...coords}/>}

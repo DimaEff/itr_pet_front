@@ -1,17 +1,16 @@
-import React, {FC} from 'react';
-import {Link, Outlet} from "react-router-dom";
+import React from 'react';
+import {Outlet} from "react-router-dom";
+import {Box} from "@mui/material";
+
+import {Admin as A} from '../components/Admin';
 
 
-const Admin: FC = ({children}) => {
+const Admin = () => {
     return (
-        <div>
-            <div>
-                <Link to={'users'}>Test</Link>
-                <Link to={'events'}>Test</Link>
-                Admin
-            </div>
-            <Outlet />
-        </div>
+        <Box>
+            <A/>
+            <Outlet/>
+        </Box>
     );
 };
 

@@ -3,15 +3,16 @@ import {Avatar, Box, Menu, MenuItem, Tooltip, Typography} from "@mui/material";
 import {useAuth0} from "@auth0/auth0-react";
 
 import {IconButton} from "../common/Buttons";
-import {useMenu} from "../../hooks";
+import {useMenu, useRoles} from "../../hooks";
 import {Link} from "../common/Link";
 
 
 interface UserProfileProps {
 }
 
-const UserProfile: FC<UserProfileProps> = () => {
+const UserMenu: FC<UserProfileProps> = () => {
     const {user, logout} = useAuth0();
+    const {isAdmin} = useRoles();
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
     const userMenuRoutes = useMenu(['user']);
@@ -48,14 +49,14 @@ const UserProfile: FC<UserProfileProps> = () => {
                 onClose={handleClose}
             >
                 {
-                    userMenuRoutes.map(({path, label}) => <MenuItem key={path}>
-                        <Link to={path}>{label}</Link>
-                    </MenuItem>)
+                    userMenuRoutes.map(({path, label}) => <Link key={path} to={path} wrapperComponent={MenuItem}>
+                        {label}
+                    </Link>)
                 }
                 {
-                    adminMenuRoutes.map(({path, label}) => <MenuItem key={path}>
-                        <Link to={path}>{label}</Link>
-                    </MenuItem>)
+                    isAdmin && adminMenuRoutes.map(({path, label}) => <Link key={path} to={path} wrapperComponent={MenuItem}>
+                        {label}
+                    </Link>)
                 }
                 <MenuItem onClick={() => logout({returnTo: window.location.origin})}>
                     <Typography textAlign="center">Log Out</Typography>
@@ -65,4 +66,4 @@ const UserProfile: FC<UserProfileProps> = () => {
     );
 }
 
-export default UserProfile;
+export default UserMenu;

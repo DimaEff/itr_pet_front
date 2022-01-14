@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useState} from 'react';
 import {Coords} from 'google-map-react';
 import {Box} from "@mui/material";
 
@@ -19,42 +19,57 @@ const MapContainer = () => {
 
     const disabled = !isAllowedLocation || !isAuthenticated;
 
-    const testEvents: Event[] = [
-        {
-            position: {lat: 59, lng: 31},
-            createdAt: '2021',
-            creatorEmail: 'asdas',
-            img: '123123',
-            description: 'The best event',
-            type: 'music',
-        },
-        {
-            position: {lat: 59.1, lng: 31.1},
-            createdAt: '2021',
-            creatorEmail: 'asdas',
-            img: '123123',
-            description: 'The best event',
-            type: 'art',
-        },
-        {
-            position: {lat: 58.9, lng: 30.9},
-            createdAt: '2021',
-            creatorEmail: 'asdas',
-            img: '123123',
-            description: 'The best event',
-            type: 'food',
-        },
-        {
-            position: {lat: 58.9, lng: 31.1},
-            createdAt: '2021',
-            creatorEmail: 'asdas',
-            img: '123123',
-            description: 'The best event',
-            type: 'other',
-        }
-    ];
+    // const testEvents: Event[] = [
+    //     {
+    //         createdAt: '2021',
+    //         creator: 'asdas',
+    //         img: '123',
+    //         description: 'The best event',
+    //         type: {
+    //             title: 'test',
+    //             value: 'test',
+    //             icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Check_green_icon.svg/2048px-Check_green_icon.svg.png'
+    //         },
+    //         lat: 59.1,
+    //         lng: 31.1,
+    //     },
+    //     {
+    //         createdAt: '2021',
+    //         creator: 'asdas',
+    //         img: '123',
+    //         description: 'The best event',
+    //         type: {
+    //             title: 'test',
+    //             value: 'test',
+    //             icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/How_to_use_icon.svg/1200px-How_to_use_icon.svg.png',
+    //         },
+    //         lat: 59.2,
+    //         lng: 31.0,
+    //     },
+    //     {
+    //         createdAt: '2021',
+    //         creator: 'asdas',
+    //         img: '123',
+    //         description: 'The best event',
+    //         type: {
+    //             title: 'test',
+    //             value: 'test',
+    //             icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/How_to_use_icon.svg/1200px-How_to_use_icon.svg.png',
+    //         },
+    //         lat: 59.0,
+    //         lng: 31.2,
+    //     },
+    // ];
 
-    return <Box sx={{width: '100%', height: '550px', position: 'relative'}}>
+    const testEvents: Event[] = [];
+
+    return <Box
+        sx={{
+            width: '100%',
+            height: '550px',
+            position: 'relative',
+        }}
+    >
         <Map
             events={testEvents}
             center={center}

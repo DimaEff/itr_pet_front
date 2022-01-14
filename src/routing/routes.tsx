@@ -1,8 +1,23 @@
-import React from "react";
+import React, {lazy} from "react";
 import {RouteObject, Navigate} from 'react-router-dom';
+import {withSuspense} from 'react-suspenser';
 
 import {Menus, Paths} from './consts';
-import {Admin, Home, Profile} from '../pages';
+import {Home} from '../pages';
+import {Loader} from "../components/common/Loader";
+import {AdminEvents, AdminUsers} from "../components/Admin";
+
+
+const loader = <Loader withBackdrop/>;
+const RedirectElement = () => <Navigate to={'/'}/>;
+
+const Admin = withSuspense(loader)(
+    lazy(() => import('../pages/Admin'))
+);
+
+const Profile = withSuspense(loader)(
+    lazy(() => import('../pages/Profile'))
+);
 
 
 export interface IRoute extends RouteObject{
@@ -12,7 +27,6 @@ export interface IRoute extends RouteObject{
     children?: IRoute[];
 }
 
-const redirectElement = <Navigate to={'/'}/>;
 
 export const getRoutes = (isAuth: boolean, isAdmin: boolean ): IRoute[] => [
     {
@@ -23,25 +37,13 @@ export const getRoutes = (isAuth: boolean, isAdmin: boolean ): IRoute[] => [
     },
     {
         path: 'admin',
-        element: isAdmin ? <Admin/>: redirectElement,
+        element: isAdmin ? <Admin />: <RedirectElement />,
         label: 'Admin panel',
         menuName: 'admin',
-        children: [
-            {
-                path: 'users',
-                element: <div>users</div>,
-                label: 'User',
-            },
-            {
-                path: 'events',
-                element: <div>events</div>,
-                label: 'Events',
-            },
-        ],
     },
     {
         path: 'profile',
-        element: isAuth ? <Profile />: redirectElement,
+        element: isAuth ? <Profile />: <RedirectElement />,
         label: 'Profile',
         menuName: 'user',
     }

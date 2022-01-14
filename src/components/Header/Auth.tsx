@@ -3,7 +3,7 @@ import ExitToAppRoundedIcon from "@mui/icons-material/ExitToAppRounded";
 import {useAuth0} from "@auth0/auth0-react";
 
 import {IconButton} from "../common/Buttons";
-import UserProfile from "./UserProfile";
+import UserMenu from "./UserMenu";
 
 
 const Auth = () => {
@@ -13,7 +13,7 @@ const Auth = () => {
         <>
             {
                 isAuthenticated ?
-                    <UserProfile/>:
+                    <UserMenu/>:
                     <IconButton onClick={loginWithPopup}>
                         <ExitToAppRoundedIcon fontSize={'large'}/>
                     </IconButton>

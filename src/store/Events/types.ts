@@ -1,13 +1,12 @@
 import {Position} from 'google-map-react';
+import {EventType} from "../EventTypes/types";
+import {Image} from "../../types";
 
 
-export type EventsTypes = 'music' | 'food' | 'art' | 'other';
-
-export interface Event {
-    position: Position;
-    type: EventsTypes;
-    img?: string;
+export interface Event extends Position{
+    type: EventType;
+    img: Image;
     description?: string;
-    creatorEmail: string;
+    creator: string;
     createdAt: string;
 }

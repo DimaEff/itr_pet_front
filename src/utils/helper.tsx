@@ -1,3 +1,6 @@
+import {v4} from 'uuid';
+
+
 export const convertToBase64 = (file: File): Promise<any> => {
     return new Promise((resolve, reject) => {
         const fileReader = new FileReader();
@@ -14,7 +17,8 @@ export const convertToBase64 = (file: File): Promise<any> => {
 export const base64toFile = async (url: string): Promise<File> => {
     const res = await fetch(url);
     const blob = await res.blob();
-    return new File([blob], "File name", {type: "image/png"});
+    const name = v4();
+    return new File([blob], name, {type: "image/png"});
 }
 
 export const getFileUrl = (file: File): string => {

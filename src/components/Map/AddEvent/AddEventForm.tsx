@@ -2,51 +2,51 @@ import React, {FC, useState} from 'react';
 import {useForm} from "react-hook-form";
 import {Box, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent} from "@mui/material";
 
-import {EventsTypes} from '../../../store';
+import {eventTypesStore} from '../../../store';
 import {Form, Input} from "../../common/Form";
 import SelectEventItem from "./SelectEventItem";
 
 
 interface AddEventFormProps {
     formId: string;
-    onAddEvent: (data: any) => void;
+    submit: (data: any) => void;
 }
 
-const AddEventForm: FC<AddEventFormProps> = ({formId, onAddEvent}) => {
+const AddEventForm: FC<AddEventFormProps> = ({formId, submit}) => {
     const {register, handleSubmit} = useForm();
 
-    const [eventType, setEventType] = useState<string>('');
+    const [type, setType] = useState<string>('');
     const handleSelect = (e: SelectChangeEvent) => {
-        setEventType(e.target.value);
+        setType(e.target.value);
     }
 
     const onSubmit = (data: any) => {
-        onAddEvent({...data, eventType});
+        submit({...data, type});
     }
-
-    const testTypes: EventsTypes[] = [
-        'music',
-        "art",
-        "food",
-        "other",
-    ];
 
     return (
         <Form id={formId} handleSubmit={handleSubmit(onSubmit)}>
-            <Box width={'100%'} display={'flex'} justifyContent={'space-between'} alignItems={'center'}
-                 p={0}>
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    width: '100%',
+                    padding: 0,
+                }}
+            >
                 <Input label="Title" register={register('title')}/>
                 <FormControl sx={{ml: 1, minWidth: 140}}>
                     <InputLabel id="event-type-label">Event type</InputLabel>
                     <Select
                         labelId="event-type-label"
                         id="event-type"
-                        value={eventType}
+                        value={type}
                         label="Event type"
                         onChange={handleSelect}
                     >
-                        {testTypes.map(e => <MenuItem key={e} value={e}>
-                            <SelectEventItem key={e} eventType={e}/>
+                        {eventTypesStore.eventTypes.map(e => <MenuItem key={e.value} value={e.value}>
+                            <SelectEventItem key={e.value} eventType={e}/>
                         </MenuItem>)}
                     </Select>
                 </FormControl>

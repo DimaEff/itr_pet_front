@@ -1,10 +1,12 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {Box, Card, CardActions, CardContent, Modal} from "@mui/material";
 
+import {eventsStore} from '../../../store';
 import {Button} from "../../common/Buttons";
-import AddEventImage from "./AddEventImage";
+import AddEventImage from "./AddEventImage/AddEventImage";
 import AddEventForm from "./AddEventForm";
 import AddedImages from "./AddedImages/AddedImages";
+import {observable} from "mobx";
 
 
 interface AddEventProps {
@@ -27,9 +29,10 @@ const AddEventModal: FC<AddEventProps> = ({open, setOpen}) => {
         );
     }
 
-    const handleAddEvent = (data: any) => {
-        console.log(data);
-        console.log(images.map(i => i[1]));
+    const handleCreateEvent = async (data: any) => {
+        const imageFiles = images.map(i => i[1]);
+        // await eventsStore.test(imageFiles);
+        await eventsStore.createEvent({...data, lat: 1, lng: 1}, imageFiles);
     }
 
     const onClose = () => {
@@ -38,6 +41,10 @@ const AddEventModal: FC<AddEventProps> = ({open, setOpen}) => {
     }
 
     const formId = 'event';
+
+    useEffect(() => {
+        console.log(eventsStore.events);
+    }, [eventsStore.events])
 
     return (
         <Modal
@@ -52,7 +59,7 @@ const AddEventModal: FC<AddEventProps> = ({open, setOpen}) => {
             >
                 <AddEventImage addImages={addImages}/>
                 <CardContent>
-                    <AddEventForm formId={formId} onAddEvent={handleAddEvent}/>
+                    <AddEventForm formId={formId} submit={handleCreateEvent}/>
                 </CardContent>
                 <CardActions
                     sx={{

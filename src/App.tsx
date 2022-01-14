@@ -5,11 +5,9 @@ import {observer} from "mobx-react-lite";
 import {Link, useRoutes} from 'react-router-dom';
 
 import {useMenu, useRoles, useTheme, useTokenForRequests} from './hooks';
-import {adminStore} from './store';
 import {getRoutes} from './routing';
-import {Container, AppWrapper} from "./components/common/Containers";
+import {AppWrapper, Container} from "./components/common/Containers";
 import {Header} from "./components/Header";
-import {Button} from "./components/common/Buttons";
 import {useAuth0} from "@auth0/auth0-react";
 
 
@@ -25,14 +23,10 @@ const App = () => {
     const {isAuthenticated} = useAuth0();
     const {isAdmin} = useRoles()
 
-    const routes = useRoutes(getRoutes(isAuthenticated, isAdmin));
+    const element = useRoutes(getRoutes(isAuthenticated, isAdmin));
 
     useTokenForRequests();
     const {colorMode, theme} = useTheme();
-
-    const fetchUsers = async () => {
-        // await adminStore.setAllUsers();
-    }
 
     return (
         <ColorModeContext.Provider value={colorMode}>
@@ -44,18 +38,7 @@ const App = () => {
                             {mainMenuRoutes.map(r => <Link key={r.path} to={r.path}>{r.label}</Link>)}
                             {allMenuRoutes.map(r => <Link key={r.path} to={r.path}>{r.label}</Link>)}
                         </Box>
-                        {routes}
-                        <Button onClick={fetchUsers}>
-                            Get all users
-                        </Button>
-                        {adminStore.users.map(u => <div key={u.user_id}>
-                            <Button onClick={() => console.log(u.user_id)}>
-                                {u.user_id}
-                            </Button>
-                            <span>{u.name}</span>|
-                            <span>{u.email}</span>|
-                            <span>{u.nickname}</span>
-                        </div>)}
+                        {element}
                     </Container>
                 </AppWrapper>
             </ThemeProvider>

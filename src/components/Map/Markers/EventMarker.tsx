@@ -16,7 +16,14 @@ const EventMarker: FC<EventMarkerProps> = ({event}) => {
             variant={'outlined'}
             elevation={0}
             onClick={() => console.log('123')}
-            sx={{width: 30, height: 30, display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer'}}
+            sx={{
+                width: 30,
+                height: 30,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                cursor: 'pointer',
+            }}
         >
             <Icon>
                 <EventIcon eventType={event.type}/>
