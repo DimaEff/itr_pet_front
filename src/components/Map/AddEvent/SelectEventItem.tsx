@@ -12,7 +12,7 @@ interface SelectEventItemProps {
 const SelectEventItem: FC<SelectEventItemProps> = ({eventType}) => {
     return (
         <Box display={'flex'}>
-            <EventIcon eventType={eventType}/>
+            {/*<EventIcon eventType={eventType}/>*/}
             <Typography marginLeft={1} variant={'h5'}>
                 {eventType.title}
             </Typography>

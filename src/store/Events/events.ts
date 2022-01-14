@@ -12,39 +12,23 @@ class Events {
         makeAutoObservable(this);
     }
 
-    async getEvents() {
+    async fetchEvents() {
         const res = await eventsAPI.getAllEvents();
         this.events = res.data;
+        console.log(this.events);
     }
 
     async createEvent(dto: any, files: File[]) {
         const formData = new FormData();
 
         Object.keys(dto).forEach(k => {
-            console.log(k, dto[k]);
             formData.append(k, dto[k]);
         });
         files.forEach(f => formData.append('files', f));
 
         await eventsAPI.createEvent(formData);
-        await this.getEvents();
+        await this.fetchEvents();
     }
-
-    // async test(files: File[]) {
-    //     const fd = new FormData();
-    //
-    //     files.forEach(file => fd.append('files', file));
-    //
-    //     const dto: any = {
-    //         title: '123',
-    //         age: 2,
-    //     }
-    //
-    //     Object.keys(dto).map(k => fd.append(k, dto[k]));
-    //
-    //     const f = await eventsAPI.test(fd);
-    //     console.log('files', f);
-    // }
 }
 
 export default new Events();

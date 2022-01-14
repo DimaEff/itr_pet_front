@@ -7,6 +7,7 @@ import AddEventImage from "./AddEventImage/AddEventImage";
 import AddEventForm from "./AddEventForm";
 import AddedImages from "./AddedImages/AddedImages";
 import {observable} from "mobx";
+import useUserLocation from "../../../hooks/useUserLocation";
 
 
 interface AddEventProps {
@@ -29,10 +30,11 @@ const AddEventModal: FC<AddEventProps> = ({open, setOpen}) => {
         );
     }
 
+    const {coords} = useUserLocation();
     const handleCreateEvent = async (data: any) => {
         const imageFiles = images.map(i => i[1]);
         // await eventsStore.test(imageFiles);
-        await eventsStore.createEvent({...data, lat: 1, lng: 1}, imageFiles);
+        await eventsStore.createEvent({...data, ...coords}, imageFiles);
     }
 
     const onClose = () => {

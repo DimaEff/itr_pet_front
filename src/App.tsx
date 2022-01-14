@@ -1,4 +1,4 @@
-import React, {createContext} from 'react';
+import React, {createContext, useEffect} from 'react';
 import {Box} from '@mui/material';
 import {ThemeProvider} from '@mui/material/styles';
 import {observer} from "mobx-react-lite";
@@ -9,6 +9,7 @@ import {getRoutes} from './routing';
 import {AppWrapper, Container} from "./components/common/Containers";
 import {Header} from "./components/Header";
 import {useAuth0} from "@auth0/auth0-react";
+import {eventsStore, eventTypesStore} from "./store";
 
 
 export const ColorModeContext = createContext({
@@ -17,6 +18,11 @@ export const ColorModeContext = createContext({
 });
 
 const App = () => {
+    useEffect(() => {
+        eventsStore.fetchEvents();
+        eventTypesStore.fetchEventTypes();
+    }, [])
+
     const mainMenuRoutes = useMenu(['main']);
     const allMenuRoutes = useMenu();
 
