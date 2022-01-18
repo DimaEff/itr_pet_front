@@ -10,6 +10,7 @@ const useTokenForRequests = () => {
         const addToken = async () => {
             const token = await getAccessTokenSilently();
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+            localStorage.setItem('auth0_token', token);
         }
 
         if (isAuthenticated) {

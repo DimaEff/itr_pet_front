@@ -1,26 +1,23 @@
-import React, {FC, forwardRef, useRef} from 'react';
+import React, {FC, useEffect, useRef} from 'react';
 import GoogleMap, {Coords} from "google-map-react";
+import {useTheme} from "@mui/material";
+import {observer} from "mobx-react-lite";
 
-import {Event} from '../../store';
+import {eventsStore} from '../../store';
 import {MapDarkStyle, MapLightStyle} from "./mapStyles";
 import EventMarker from "./Markers/EventMarker";
 import UserMarker from "./Markers/UserMarker";
-import {useTheme} from "@mui/material";
 import useUserLocation from "../../hooks/useUserLocation";
 
 
 interface MapProps {
-    events: Event[];
-    center: Coords,
+    center: Coords;
     setCenter: (coords: Coords) => void;
     disabled: boolean;
 }
 
-const getEventKey = (e: Event) => {
-    return `${e.createdAt}${e.lat}${e.lng}`;
-}
-
-const Map: FC<MapProps> = forwardRef(({events, center, setCenter, disabled}, ref) => {
+// forwardRef and observer error
+const Map: FC<MapProps> = observer(({center, setCenter, disabled}) => {
     const theme = useTheme();
 
     const urlKey = process.env.REACT_APP_GOOGLE_API_KEY || '';
@@ -35,30 +32,34 @@ const Map: FC<MapProps> = forwardRef(({events, center, setCenter, disabled}, ref
     }
 
     return (
-        <GoogleMap
-            bootstrapURLKeys={{key: urlKey}}
-            defaultCenter={defaultCenter}
-            center={center}
-            defaultZoom={12}
-            margin={[50, 50, 50, 50]}
-            onChange={({center}) => setCenter(center)}
-            options={{
-                styles: theme.palette.mode === 'light' ? MapLightStyle : MapDarkStyle,
-                fullscreenControl: false,
-            }}
-            onGoogleApiLoaded={handleLoaded}
-        >
-            {mapRef &&
-            events.map(e => <EventMarker
-                key={getEventKey(e)}
-                event={e}
-                lat={e.lat}
-                lng={e.lng}
-            />)
-            }
-            {(mapRef && !disabled) && <UserMarker disabled={disabled} {...coords}/>}
-        </GoogleMap>
+        <>
+            <GoogleMap
+                bootstrapURLKeys={{key: urlKey}}
+                defaultCenter={defaultCenter}
+                center={center}
+                defaultZoom={12}
+                margin={[50, 50, 50, 50]}
+                onChange={({center}) => setCenter(center)}
+                options={{
+                    styles: theme.palette.mode === 'light' ? MapLightStyle : MapDarkStyle,
+                    fullscreenControl: false,
+                }}
+                onGoogleApiLoaded={handleLoaded}
+            >
+                {
+                    mapRef &&
+                    eventsStore.events.map(e => <EventMarker
+                        key={e._id}
+                        event={e}
+                        lat={e.lat}
+                        lng={e.lng}
+                    />)
+                }
+                {(mapRef && !disabled) && <UserMarker disabled={disabled} {...coords}/>}
+            </GoogleMap>
+            <button onClick={() => console.log(eventsStore.events)}>show events</button>
+        </>
     );
-});
+})
 
 export default Map;

@@ -1,4 +1,5 @@
 import {makeAutoObservable} from "mobx";
+import {io, Socket} from "socket.io-client";
 
 import eventsAPI from './eventsAPI';
 import {Event} from "./types";
@@ -6,28 +7,37 @@ import {CreateEventDto} from "./dto/create-event.dto";
 
 
 class Events {
+    private baseUrl = process.env.REACT_APP_SERVER_WS + '/events';
+    private socket: Socket | null = null;
+
     events: Event[] = [];
 
     constructor() {
         makeAutoObservable(this);
     }
 
-    async fetchEvents() {
-        const res = await eventsAPI.getAllEvents();
-        this.events = res.data;
-        console.log(this.events);
+    subscribe = () => {
+        const jwt_token = localStorage.getItem('auth0_token');
+        this.socket = io(this.baseUrl, {query: {jwt_token}}).connect();
+        this.socket.on('events.connected', this.setEvents);
+        this.socket.on('events.changed', this.setEvents);
     }
 
-    async createEvent(dto: any, files: File[]) {
-        const formData = new FormData();
+    unsubscribe = () => {
+        this.socket?.disconnect();
+    }
 
-        Object.keys(dto).forEach(k => {
-            formData.append(k, dto[k]);
-        });
-        files.forEach(f => formData.append('files', f));
+    createEvent = (dto: any, files: File[]) => {
+        this.socket?.emit('events.create', {...dto, files});
+    }
 
-        await eventsAPI.createEvent(formData);
-        await this.fetchEvents();
+    deleteEvent = (id: string) => {
+        this.socket?.emit('events.delete', id);
+    }
+
+    private setEvents = (events: Event[]) => {
+        console.log(this.setEvents.name, events)
+        this.events = events;
     }
 }
 

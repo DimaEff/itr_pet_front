@@ -33,7 +33,6 @@ const AddEventModal: FC<AddEventProps> = ({open, setOpen}) => {
     const {coords} = useUserLocation();
     const handleCreateEvent = async (data: any) => {
         const imageFiles = images.map(i => i[1]);
-        // await eventsStore.test(imageFiles);
         await eventsStore.createEvent({...data, ...coords}, imageFiles);
     }
 
@@ -43,10 +42,6 @@ const AddEventModal: FC<AddEventProps> = ({open, setOpen}) => {
     }
 
     const formId = 'event';
-
-    useEffect(() => {
-        console.log(eventsStore.events);
-    }, [eventsStore.events])
 
     return (
         <Modal

@@ -1,7 +1,6 @@
 import React, {createContext, useEffect} from 'react';
 import {Box} from '@mui/material';
 import {ThemeProvider} from '@mui/material/styles';
-import {observer} from "mobx-react-lite";
 import {Link, useRoutes} from 'react-router-dom';
 
 import {useMenu, useRoles, useTheme, useTokenForRequests} from './hooks';
@@ -18,9 +17,12 @@ export const ColorModeContext = createContext({
 });
 
 const App = () => {
+    // init app
     useEffect(() => {
-        eventsStore.fetchEvents();
+        eventsStore.subscribe();
         eventTypesStore.fetchEventTypes();
+
+        return eventsStore.unsubscribe;
     }, [])
 
     const mainMenuRoutes = useMenu(['main']);
@@ -31,6 +33,7 @@ const App = () => {
 
     const element = useRoutes(getRoutes(isAuthenticated, isAdmin));
 
+    // set auth0_token to local storage 'auth0_token'
     useTokenForRequests();
     const {colorMode, theme} = useTheme();
 
@@ -52,4 +55,4 @@ const App = () => {
     );
 }
 
-export default observer(App);
+export default App;

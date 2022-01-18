@@ -4,9 +4,11 @@ import {Image} from "../../types";
 
 
 export interface Event extends Position{
-    type: EventType;
-    img: Image;
+    _id: string;
+    title: string;
     description?: string;
     creator: string;
     createdAt: string;
+    type: EventType;
+    images: Image[];
 }
