@@ -1,13 +1,13 @@
-import React, {FC, useEffect, useState} from 'react';
-import {Box, Card, CardActions, CardContent, Modal} from "@mui/material";
+import React, {FC, useState} from 'react';
+import {Card, CardActions, CardContent, Modal} from "@mui/material";
 
 import {eventsStore} from '../../../store';
 import {Button} from "../../common/Buttons";
 import AddEventImage from "./AddEventImage/AddEventImage";
 import AddEventForm from "./AddEventForm";
 import AddedImages from "./AddedImages/AddedImages";
-import {observable} from "mobx";
 import useUserLocation from "../../../hooks/useUserLocation";
+import {CreateEventForm} from "../../../store/Events/dto/create-event.dto";
 
 
 interface AddEventProps {
@@ -31,9 +31,10 @@ const AddEventModal: FC<AddEventProps> = ({open, setOpen}) => {
     }
 
     const {coords} = useUserLocation();
-    const handleCreateEvent = async (data: any) => {
-        const imageFiles = images.map(i => i[1]);
-        await eventsStore.createEvent({...data, ...coords}, imageFiles);
+    const handleCreateEvent = (data: CreateEventForm) => {
+        const files: File[] = images.map(i => i[1]);
+        console.log(data);
+        // eventsStore.createEvent({...data, ...coords, files});
     }
 
     const onClose = () => {

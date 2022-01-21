@@ -27,8 +27,8 @@ class Events {
         this.socket?.disconnect();
     }
 
-    createEvent = (dto: any, files: File[]) => {
-        this.socket?.emit('events.create', {...dto, files});
+    createEvent = (dto: CreateEventDto) => {
+        this.socket?.emit('events.create', dto);
     }
 
     deleteEvent = (id: string) => {

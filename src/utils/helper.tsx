@@ -1,4 +1,7 @@
 import {v4} from 'uuid';
+import {CreateEventForm} from "../store/Events/dto/create-event.dto";
+import {string} from "yup";
+import {FieldErrors} from "react-hook-form/dist/types/errors";
 
 
 export const convertToBase64 = (file: File): Promise<any> => {
@@ -29,10 +32,24 @@ export const onSelectImageHandler = (files: File[]): FormData => {
     const formData = new FormData();
     files.forEach(f => formData.append('file', f));
 
-    // const config = {
-    //     headers: {
-    //         "Content-Type":"multipart/form-data"
-    //     }
-    // };
     return formData;
+}
+
+
+interface ErrorAndMessage {
+    error: boolean;
+    helperText?: string;
+}
+export function getMuiErrorAndMessageCreator<T> (errors: FieldErrors) {
+    return (field: keyof T, withoutHelperText = false):  ErrorAndMessage => {
+        const res: ErrorAndMessage = {error: false};
+        const message = errors[String(field)]?.message;
+
+        res.error = !!message;
+        if (!withoutHelperText) {
+            res.helperText = message;
+        }
+
+        return res;
+    }
 }

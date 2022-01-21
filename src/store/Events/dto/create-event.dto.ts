@@ -1,7 +1,13 @@
-export interface CreateEventDto {
-    readonly title: string;
-    readonly description: string;
-    readonly type: string;
-    readonly lat: number;
-    readonly lng: number;
+export interface CreateEventForm {
+    title: string;
+    description: string;
+    type: string;
+    startDate?: Date;
+    endDate: Date;
+}
+
+export interface CreateEventDto extends CreateEventForm{
+    files: File[];
+    lat: number;
+    lng: number;
 }

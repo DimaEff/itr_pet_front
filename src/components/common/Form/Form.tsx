@@ -1,5 +1,5 @@
-import React, {FC, Children} from 'react';
-import {Box} from "@mui/material";
+import React, {FC} from 'react';
+import {Stack} from "@mui/material";
 
 
 interface FormProps {
@@ -8,13 +8,11 @@ interface FormProps {
 }
 
 const Form: FC<FormProps> = ({children, handleSubmit, id}) => {
-    const childrenArray = Children.toArray(children);
-
     return (
         <form id={id} onSubmit={handleSubmit}>
-            <Box sx={{'>*': {marginBottom: 1}}}>
+            <Stack spacing={1}>
                 {children}
-            </Box>
+            </Stack>
         </form>
     );
 };
