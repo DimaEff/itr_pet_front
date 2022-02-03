@@ -9,19 +9,20 @@ import Message from "./Message";
 
 
 interface ChatProps {
+    eventId: string;
 }
 
-const EventChat: FC<ChatProps> = observer(() => {
+const EventChat: FC<ChatProps> = observer(({eventId}) => {
     const {user} = useAuth0();
 
     const [open, setOpen] = useState(false);
-    // useEffect(() => {
-        // if (open && !eventChatStore.connected) {
-        //     eventChatStore.subscribe('123');
-        // }
-        //
-        // return eventChatStore.unsubscribe;
-    // }, [open]);
+    useEffect(() => {
+        if (open && !eventChatStore.connected) {
+            eventChatStore.subscribe(eventId);
+        }
+
+        return eventChatStore.unsubscribe;
+    }, [open]);
 
     const [message, setMessage] = useState('');
 

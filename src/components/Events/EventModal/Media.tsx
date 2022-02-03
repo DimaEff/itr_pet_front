@@ -16,7 +16,7 @@ const Media: FC<MediaProps> = ({event}) => {
         <CardMedia sx={{width: '100%', height: 194}}>
             <Slider>
                 {event.images.map(({path}) => <SwiperSlide key={path}>
-                    <ImageContainer src={path} w={'100%'} h={'100%'}/>
+                    <ImageContainer src={path} w={'100%'} h={'100%'} fullImg/>
                 </SwiperSlide>)}
             </Slider>
         </CardMedia>

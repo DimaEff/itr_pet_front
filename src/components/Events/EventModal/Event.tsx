@@ -28,24 +28,26 @@ const lorem = new LoremIpsum({
 const Event: FC<EventProps> = ({event, withoutChat}) => {
 
     return (
-        <Card sx={{position: 'relative', width: 345}}>
-            <Header event={event}/>
-            <Media event={event}/>
-            <CardContent
-                sx={{
-                    overflowY: 'auto',
-                    height: 170,
-                    mt: 6,
-                }}
-            >
-                <Typography variant="body2" color="text.secondary">
-                    {/*{event.description}*/}
-                    {lorem.generateParagraphs(2)}
-                </Typography>
-            </CardContent>
-            <Actions event={event}/>
-            {withoutChat || <EventChat/>}
-        </Card>
+        <>
+            <Card sx={{position: 'relative', width: 345}}>
+                <Header event={event}/>
+                <Media event={event}/>
+                <CardContent
+                    sx={{
+                        overflowY: 'auto',
+                        height: 170,
+                        mt: 6,
+                    }}
+                >
+                    <Typography variant="body2" color="text.secondary">
+                        {/*{event.description}*/}
+                        {lorem.generateParagraphs(2)}
+                    </Typography>
+                </CardContent>
+                <Actions event={event}/>
+                {!withoutChat && <EventChat eventId={event._id}/>}
+            </Card>
+        </>
     );
 };
 

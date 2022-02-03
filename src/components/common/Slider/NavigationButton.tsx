@@ -35,7 +35,7 @@ const NavigationButton: FC<NavigationButtonProps> = ({direction, control}) => {
             sx={{
                 zIndex: 1,
                 position: 'absolute',
-                top: '50%',
+                top: '45%',
                 [side[direction]]: 0,
             }}
         >

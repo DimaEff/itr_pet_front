@@ -6,27 +6,20 @@ import {CreateMessageDto} from "./dto/createMessage.dto";
 
 
 class EventChat {
-    private baseUrl = process.env.REACT_APP_SERVER_WS + '/event-chat';
+    private baseUrl: string;
     private socket: Socket | null = null;
 
     messages: IMessage[] = [];
     connected: boolean = false;
 
     constructor() {
+        this.baseUrl = process.env.REACT_APP_SERVER_WS + '/event-chat';
         makeAutoObservable(this);
     }
 
-    // subscribe = (eventId: string) => {
-    //     const jwt_token = localStorage.getItem('auth0_token');
-    //     this.socket = io(this.baseUrl, {query: {jwt_token, event_id: eventId}}).connect();
-    //     this.connected = true;
-    //     this.socket.on('events-chat.connected', this.setMessages);
-    //     this.socket.on('events-chat.changed', this.setMessages);
-    // }
-
-    subscribe = (eventId: string) => {
+    subscribe = (event_id: string) => {
         const jwt_token = localStorage.getItem('auth0_token');
-        this.socket = io(this.baseUrl, {query: {jwt_token, event_id: eventId}}).connect();
+        this.socket = io(this.baseUrl, {query: {jwt_token, event_id}}).connect();
         this.connected = true;
         this.socket.on('events-chat.connected', this.setMessages);
         this.socket.on('events-chat.changed', this.setMessages);
@@ -43,6 +36,7 @@ class EventChat {
 
     private setMessages = (messages: IMessage[]) => {
         this.messages = messages;
+        console.log(this.messages);
     }
 }
 

@@ -17,7 +17,7 @@ const Header: FC<CardHeaderProps> = ({event}) => {
             <CardHeader
                 avatar={
                     <Avatar sx={{bgcolor: red[500]}} aria-label="recipe">
-                        Dima
+                        D
                         {/*{event.uid[0]}*/}
                     </Avatar>
                 }
@@ -25,7 +25,7 @@ const Header: FC<CardHeaderProps> = ({event}) => {
                 title={event.title}
                 subheader={<Box>
                     <Typography variant="caption" component={'div'}>
-                        {isoToDateString(event.startDate)}
+                       {isoToDateString(event.startDate)}
                     </Typography>
                     <Typography variant="caption">
                         {isoToDateString(event.endDate)}

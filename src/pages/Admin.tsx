@@ -1,5 +1,5 @@
 import React from 'react';
-import {Outlet} from "react-router-dom";
+import {Outlet, useLocation} from "react-router-dom";
 import {Box, Stack} from "@mui/material";
 
 import {useMenu} from "../hooks";
@@ -9,6 +9,7 @@ import {Button} from "../components/common/Buttons";
 
 const Admin = () => {
     const adminMenu = useMenu(['admin.children'], true);
+    const {pathname} = useLocation()
 
     return (
         <Box>
@@ -17,6 +18,9 @@ const Admin = () => {
                     key={path}
                     to={path}
                     wrapperComponent={Button}
+                    wrapperProps={{
+                        variant: pathname.includes(path) ? 'contained': 'outlined',
+                    }}
                 >
                     {label}
                 </Link>)}

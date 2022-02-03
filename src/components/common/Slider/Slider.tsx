@@ -21,6 +21,10 @@ const Slider: FC<SliderProps & SwiperProps> = ({children, ...props}) => {
             modules={[Controller]}
             controller={{control}}
             onSwiper={setControl}
+            style={{
+                width: '100%',
+                height: '100%',
+            }}
         >
             {children}
             <NavigationButton direction={'prev'} control={control}/>
