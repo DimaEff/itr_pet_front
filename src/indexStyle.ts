@@ -36,6 +36,13 @@ export const getTheme = (mode: PaletteMode) => createTheme({
                     }
                 }
             ]
+        },
+        MuiTypography: {
+            styleOverrides: {
+                root: {
+                    wordWrap: 'break-word',
+                }
+            }
         }
     }
 });

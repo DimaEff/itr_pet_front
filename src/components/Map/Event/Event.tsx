@@ -1,11 +1,11 @@
 import React, {FC} from 'react';
 import {Box} from "@mui/material";
 
-import {Event} from '../../../store'
+import {IEvent} from '../../../store'
 
 
 interface EventProps {
-    event: Event;
+    event: IEvent;
 }
 
 const Event: FC<EventProps> = ({event}) => {

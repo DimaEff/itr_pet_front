@@ -1,5 +1,6 @@
 import React, {FC, useState} from 'react';
 import {Card, CardActions, CardContent, Modal} from "@mui/material";
+import {useAuth0} from "@auth0/auth0-react";
 
 import {eventsStore} from '../../../store';
 import {Button} from "../../common/Buttons";
@@ -30,11 +31,17 @@ const AddEventModal: FC<AddEventProps> = ({open, setOpen}) => {
         );
     }
 
+    const {user} = useAuth0();
     const {coords} = useUserLocation();
     const handleCreateEvent = (data: CreateEventForm) => {
+        if (!user?.sub || !images.length) {
+            console.log('have not user or images');
+            console.log(user?.sub, images.length);
+            return
+        }
+
         const files: File[] = images.map(i => i[1]);
-        console.log(data);
-        // eventsStore.createEvent({...data, ...coords, files});
+        eventsStore.createEvent({...data, ...coords, files, creatorId: user.sub});
     }
 
     const onClose = () => {

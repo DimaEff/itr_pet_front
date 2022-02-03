@@ -10,4 +10,5 @@ export interface CreateEventDto extends CreateEventForm{
     files: File[];
     lat: number;
     lng: number;
+    creatorId: string;
 }

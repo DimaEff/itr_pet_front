@@ -2,12 +2,12 @@ import React, {FC} from 'react';
 import {Position} from "google-map-react";
 import {Icon, Paper} from "@mui/material";
 
-import {Event} from '../../../store';
+import {IEvent} from '../../../store';
 import EventIcon from "./EventIcon";
 
 
 interface EventMarkerProps extends Position{
-    event: Event;
+    event: IEvent;
 }
 
 const EventMarker: FC<EventMarkerProps> = ({event}) => {

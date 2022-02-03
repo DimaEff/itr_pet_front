@@ -1,11 +1,11 @@
 import React, {FC} from 'react';
 import {Icon} from '@mui/material';
 
-import {EventType} from '../../../store';
+import {IEventType} from '../../../store';
 
 
 interface EventIconProps {
-    eventType: EventType;
+    eventType: IEventType;
 }
 
 const EventIcon: FC<EventIconProps> = ({eventType}) => {

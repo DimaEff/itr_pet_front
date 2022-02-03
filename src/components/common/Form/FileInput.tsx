@@ -2,6 +2,8 @@ import React, {FC, useEffect, useState} from 'react';
 import {useDropzone} from 'react-dropzone';
 import {Box} from '@mui/material';
 import DownloadForOfflineRoundedIcon from "@mui/icons-material/DownloadForOfflineRounded";
+import {Image} from "@mui/icons-material";
+import {ImageContainer} from "../Containers";
 
 
 type FileTypes = 'audio/*' | 'video/*' | 'image/*';
@@ -13,6 +15,7 @@ interface FileInputProps {
     h?: string | number;
     fileTypes?: FileTypes | FileTypes[];
     maxFiles?: number;
+    preview?: string | null;
 }
 
 const FileInput: FC<FileInputProps> = (
@@ -23,6 +26,7 @@ const FileInput: FC<FileInputProps> = (
         h,
         fileTypes,
         maxFiles,
+        preview,
     }) => {
 
     const {getRootProps, getInputProps, acceptedFiles, isDragActive} = useDropzone({
@@ -36,30 +40,51 @@ const FileInput: FC<FileInputProps> = (
         }
     }, [acceptedFiles]);
 
-    const [isOpen, setIsOpen] = useState(false);
+    const [open, setOpen] = useState(false);
 
     return (
         <Box
             sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                border: '4px dashed',
-                borderColor: (isDragActive || isOpen) ? '#fff' : '#a59a9a',
-                borderRadius: '20px',
+                position: 'relative',
                 width: w || '200px',
                 height: h || '150px',
-                cursor: `pointer`,
-                'input': {
-                    zIndex: 1,
-                }
+                textAlign: 'center',
             }}
-            onMouseEnter={() => setIsOpen(true)}
-            onMouseLeave={() => setIsOpen(false)}
-            {...getRootProps()}
         >
-            <DownloadForOfflineRoundedIcon/>
-            <input name={name} {...getInputProps()}/>
+            {preview && <Box
+                sx={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                }}
+            >
+                <ImageContainer src={preview}/>
+            </Box>}
+            <Box
+                sx={{
+                    zIndex: 1,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    border: '4px dashed',
+                    borderColor: (isDragActive || open) ? '#fff' : '#a59a9a',
+                    borderRadius: '20px',
+                    width: '100%',
+                    height: '100%',
+                    cursor: `pointer`,
+                    'input': {
+                        zIndex: 2,
+                    }
+                }}
+                onMouseEnter={() => setOpen(true)}
+                onMouseLeave={() => setOpen(false)}
+                {...getRootProps()}
+            >
+                <DownloadForOfflineRoundedIcon/>
+                <input name={name} {...getInputProps()}/>
+            </Box>
         </Box>
     );
 };

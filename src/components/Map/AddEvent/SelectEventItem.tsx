@@ -1,12 +1,12 @@
 import React, {FC} from 'react';
 import {Box, Typography} from "@mui/material";
 
-import {EventType} from "../../../store";
+import {IEventType} from "../../../store";
 import EventIcon from "../Markers/EventIcon";
 
 
 interface SelectEventItemProps {
-    eventType: EventType;
+    eventType: IEventType;
 }
 
 const SelectEventItem: FC<SelectEventItemProps> = ({eventType}) => {

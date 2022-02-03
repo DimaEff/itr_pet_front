@@ -1,16 +1,15 @@
 import React, {FC, forwardRef} from 'react';
-import {Button as MButton, ButtonProps as MButtonProps} from '@mui/material';
+import {LoadingButton, LoadingButtonProps} from '@mui/lab';
 
 
-interface ButtonProps extends MButtonProps {
-
+interface ButtonProps {
 }
 
-const Button: FC<ButtonProps> = forwardRef(({children, ...props}, ref) => {
+const Button: FC<ButtonProps & LoadingButtonProps> = forwardRef(({children, ...props}, ref) => {
     return (
-        <MButton variant={"outlined"} ref={ref} {...props}>
+        <LoadingButton variant={"outlined"} ref={ref} {...props}>
             {children}
-        </MButton>
+        </LoadingButton>
     );
 });
 

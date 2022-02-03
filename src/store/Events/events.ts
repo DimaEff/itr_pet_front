@@ -1,8 +1,8 @@
 import {makeAutoObservable} from "mobx";
 import {io, Socket} from "socket.io-client";
+import {parseISO} from 'date-fns';
 
-import eventsAPI from './eventsAPI';
-import {Event} from "./types";
+import {IEvent} from "./types";
 import {CreateEventDto} from "./dto/create-event.dto";
 
 
@@ -10,7 +10,7 @@ class Events {
     private baseUrl = process.env.REACT_APP_SERVER_WS + '/events';
     private socket: Socket | null = null;
 
-    events: Event[] = [];
+    events: IEvent[] = [];
 
     constructor() {
         makeAutoObservable(this);
@@ -35,9 +35,18 @@ class Events {
         this.socket?.emit('events.delete', id);
     }
 
-    private setEvents = (events: Event[]) => {
+    get eventsWithValidDate() {
+        return this.events.filter(this.checkDate);
+    }
+
+    private setEvents = (events: IEvent[]) => {
         console.log(this.setEvents.name, events)
         this.events = events;
+    }
+
+    private checkDate = ({startDate, endDate}: IEvent): boolean => {
+        const now = new Date().valueOf();
+        return (parseISO(startDate).valueOf() <= now) && (parseISO(endDate).valueOf() >= now);
     }
 }
 

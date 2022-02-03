@@ -1,9 +1,8 @@
 import {Image} from "../../types";
+import {CreateEventTypeDto} from "./dto/create-event-type.dto";
 
 
-export interface EventType {
+export interface IEventType extends CreateEventTypeDto{
     _id: string;
-    title: string;
-    value: string;
     icon: Image;
 }

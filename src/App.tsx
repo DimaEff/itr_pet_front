@@ -1,13 +1,12 @@
 import React, {createContext, useEffect} from 'react';
-import {Box} from '@mui/material';
 import {ThemeProvider} from '@mui/material/styles';
-import {Link, useRoutes} from 'react-router-dom';
+import {useRoutes} from 'react-router-dom';
+import {useAuth0} from "@auth0/auth0-react";
 
-import {useMenu, useRoles, useTheme, useTokenForRequests} from './hooks';
+import {useRoles, useTheme, useTokenForRequests} from './hooks';
 import {getRoutes} from './routing';
 import {AppWrapper, Container} from "./components/common/Containers";
 import {Header} from "./components/Header";
-import {useAuth0} from "@auth0/auth0-react";
 import {eventsStore, eventTypesStore} from "./store";
 
 
@@ -25,9 +24,6 @@ const App = () => {
         return eventsStore.unsubscribe;
     }, [])
 
-    const mainMenuRoutes = useMenu(['main']);
-    const allMenuRoutes = useMenu();
-
     const {isAuthenticated} = useAuth0();
     const {isAdmin} = useRoles()
 
@@ -43,10 +39,6 @@ const App = () => {
                 <AppWrapper>
                     <Header/>
                     <Container>
-                        <Box>
-                            {mainMenuRoutes.map(r => <Link key={r.path} to={r.path}>{r.label}</Link>)}
-                            {allMenuRoutes.map(r => <Link key={r.path} to={r.path}>{r.label}</Link>)}
-                        </Box>
                         {element}
                     </Container>
                 </AppWrapper>

@@ -23,6 +23,7 @@ const MapContainer = () => {
             width: '100%',
             height: '550px',
             position: 'relative',
+            margin: '12px 0',
         }}
     >
         <Map

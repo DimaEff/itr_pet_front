@@ -1,13 +1,13 @@
-import {makeAutoObservable} from "mobx";
+import {makeAutoObservable, runInAction} from "mobx";
 
 import eventTypesAPI from "./eventTypesAPI";
 import {CreateEventTypeDto} from "./dto/create-event-type.dto";
-import {EventType} from "./types";
+import {IEventType} from "./types";
 import {serialize} from "object-to-formdata";
 
 
 class EventTypes {
-    eventTypes: EventType[] = [];
+    eventTypes: IEventType[] = [];
 
     constructor() {
         makeAutoObservable(this);
@@ -15,7 +15,9 @@ class EventTypes {
 
     async fetchEventTypes() {
         const res = await eventTypesAPI.getAllEventTypes();
-        this.eventTypes = res.data;
+        runInAction(() => {
+            this.eventTypes = res.data;
+        })
     }
 
     async createEventType(dto: CreateEventTypeDto, icon: File) {
