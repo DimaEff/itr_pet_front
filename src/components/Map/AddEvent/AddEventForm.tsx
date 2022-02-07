@@ -83,13 +83,13 @@ const AddEventForm: FC<AddEventFormProps> = observer(({formId, submit}) => {
                     {...getErrorAndMessage('title')}
                 />
                 <FormControl sx={{ml: 1, minWidth: 140}}>
-                    <InputLabel id="event-type-label">Event type</InputLabel>
+                    <InputLabel id="event-type-label">EventCard type</InputLabel>
                     <Select
                         name={'type'}
                         control={control}
                         labelId="event-type-label"
                         id="event-type"
-                        label="Event type"
+                        label="EventCard type"
                         {...getErrorAndMessage('description', true)}
                     >
                         {eventTypesStore.eventTypes.map(e => <MenuItem key={e.value} value={e.value}>

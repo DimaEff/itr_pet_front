@@ -21,7 +21,7 @@ const AdminEvents = observer(() => {
             </SimpleSearch>
             <Grid container m={1} spacing={2}>
                 {searchedValues.map(e => <Grid key={e._id} item>
-                    <EventCard event={e} withoutChat/>
+                    <EventCard event={e}/>
                 </Grid>)}
             </Grid>
         </Box>

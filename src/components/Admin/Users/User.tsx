@@ -20,7 +20,7 @@ const User: FC<UserProps> = ({user}) => {
             sx={{
                 display: 'flex',
                 height: 120,
-                width: 430,
+                width: 410,
             }}
         >
             <CardMedia>

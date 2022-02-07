@@ -1,18 +1,18 @@
 import React, {FC, useEffect, useState} from 'react';
 import {useAuth0} from "@auth0/auth0-react";
-import {Accordion, AccordionDetails, AccordionSummary, Stack, TextField} from "@mui/material";
-import {observer} from "mobx-react-lite";
+import {Accordion, AccordionSummary} from "@mui/material";
 
-import {Button} from "../../../common/Buttons";
 import {eventChatStore} from "../../../../store";
-import Message from "./Message";
+import {CreateMessageForm} from "../../../../store/EventChat/dto/createMessage.dto";
+import EventChatForm from "./EventChatForm";
+import Messages from "./Messages";
 
 
 interface ChatProps {
     eventId: string;
 }
 
-const EventChat: FC<ChatProps> = observer(({eventId}) => {
+const EventChat: FC<ChatProps> = ({eventId}) => {
     const {user} = useAuth0();
 
     const [open, setOpen] = useState(false);
@@ -22,19 +22,17 @@ const EventChat: FC<ChatProps> = observer(({eventId}) => {
         }
 
         return eventChatStore.unsubscribe;
-    }, [open]);
+    }, [open, eventId]);
 
-    const [message, setMessage] = useState('');
-
-    const handleMessage = () => {
+    const handleMessage = (data: CreateMessageForm) => {
         if (!user?.sub) {
-            return
+            return;
         }
 
         eventChatStore.message({
-            message,
-            eid: '123',
+            eid: eventId,
             uid: user?.sub,
+            ...data
         });
     }
 
@@ -53,19 +51,10 @@ const EventChat: FC<ChatProps> = observer(({eventId}) => {
             <AccordionSummary>
                 Chat
             </AccordionSummary>
-            <AccordionDetails sx={{maxHeight: '400px', overflowY: 'auto'}}>
-                <Stack spacing={1}>
-                    {eventChatStore.messages.map(m => <Message key={m._id} message={m}/>)}
-                </Stack>
-            </AccordionDetails>
-            <AccordionDetails>
-                <TextField value={message} onChange={e => setMessage(e.target.value)}/>
-                <Button onClick={handleMessage}>
-                    message
-                </Button>
-            </AccordionDetails>
+            <Messages />
+            <EventChatForm onMessage={handleMessage}/>
         </Accordion>
     );
-});
+};
 
 export default EventChat;

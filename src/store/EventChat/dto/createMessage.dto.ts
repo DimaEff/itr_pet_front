@@ -1,5 +1,8 @@
-export interface CreateMessageDto {
+export interface CreateMessageForm {
+    message: string;
+}
+
+export interface CreateMessageDto extends CreateMessageForm {
     eid: string;
     uid: string;
-    message: string;
 }

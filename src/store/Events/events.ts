@@ -1,48 +1,91 @@
-import {makeAutoObservable} from "mobx";
+import {action, computed, flow, makeAutoObservable, makeObservable, observable} from "mobx";
 import {io, Socket} from "socket.io-client";
 import {parseISO} from 'date-fns';
 
 import {IEvent} from "./types";
 import {CreateEventDto} from "./dto/create-event.dto";
 
+import {WebSocket} from "../WebSocket";
 
-class Events {
-    private baseUrl: string;
-    private socket: Socket | null = null;
 
+// class Events {
+//     private baseUrl: string;
+//     private socket: Socket | null = null;
+//
+//     connect = false;
+//     events: IEvent[] = [];
+//
+//     constructor() {
+//         this.baseUrl = process.env.REACT_APP_SERVER_WS + '/events';
+//         makeAutoObservable(this);
+//     }
+//
+//     subscribe = () => {
+//         const jwt_token = localStorage.getItem('auth0_token');
+//         this.socket = io(this.baseUrl, {query: {jwt_token}}).connect();
+//         this.socket.emit('events.connect');
+//         this.connect = true;
+//         this.socket.on('events.connected', this.setEvents);
+//         this.socket.on('events.changed', this.setEvents);
+//     }
+//
+//     unsubscribe = () => {
+//         this.socket?.disconnect();
+//         this.connect = false;
+//     }
+//
+//     createEvent = (dto: CreateEventDto) => {
+//         this.socket?.emit('events.create', dto);
+//     }
+//
+//     deleteEvent = (id: string) => {
+//         this.socket?.emit('events.delete', id);
+//     }
+//
+//     get eventsWithValidDate() {
+//         return this.events.filter(this.checkDate);
+//     }
+//
+//     private setEvents = (events: IEvent[]) => {
+//         console.log(this.setEvents.name, events)
+//         this.events = events;
+//     }
+//
+//     private checkDate = ({startDate, endDate}: IEvent): boolean => {
+//         const now = new Date().valueOf();
+//         return (parseISO(startDate).valueOf() <= now) && (parseISO(endDate).valueOf() >= now);
+//     }
+// }
+
+class Events extends WebSocket {
     events: IEvent[] = [];
 
     constructor() {
-        this.baseUrl = process.env.REACT_APP_SERVER_WS + '/events';
-        makeAutoObservable(this);
-    }
-
-    subscribe = () => {
-        const jwt_token = localStorage.getItem('auth0_token');
-        this.socket = io(this.baseUrl, {query: {jwt_token}, upgrade: true}).connect();
-        this.socket.on('events.connected', this.setEvents);
-        this.socket.on('events.changed', this.setEvents);
-    }
-
-    unsubscribe = () => {
-        this.socket?.disconnect();
+        super({
+            socketName: 'events',
+            onChange: (data) => {
+                console.log('events', data);
+                this.events = data
+            },
+        });
+        makeObservable(this, {
+            events: observable,
+            createEvent: action,
+            deleteEvent: action,
+            eventsWithValidDate: computed,
+        });
     }
 
     createEvent = (dto: CreateEventDto) => {
-        this.socket?.emit('events.create', dto);
+        this._socket?.emit('events.create', dto);
     }
 
     deleteEvent = (id: string) => {
-        this.socket?.emit('events.delete', id);
+        this._socket?.emit('events.delete', id);
     }
 
     get eventsWithValidDate() {
         return this.events.filter(this.checkDate);
-    }
-
-    private setEvents = (events: IEvent[]) => {
-        console.log(this.setEvents.name, events)
-        this.events = events;
     }
 
     private checkDate = ({startDate, endDate}: IEvent): boolean => {

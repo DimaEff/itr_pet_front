@@ -25,7 +25,7 @@ const lorem = new LoremIpsum({
     }
 });
 
-const Event: FC<EventProps> = ({event, withoutChat}) => {
+const EventCard: FC<EventProps> = ({event, withoutChat}) => {
 
     return (
         <>
@@ -51,4 +51,4 @@ const Event: FC<EventProps> = ({event, withoutChat}) => {
     );
 };
 
-export default Event;
+export default EventCard;

@@ -3,11 +3,11 @@ import {ThemeProvider} from '@mui/material/styles';
 import {useRoutes} from 'react-router-dom';
 import {useAuth0} from "@auth0/auth0-react";
 
+import {eventsStore, eventTypesStore} from "./store";
 import {useRoles, useTheme, useTokenForRequests} from './hooks';
 import {getRoutes} from './routing';
 import {AppWrapper, Container} from "./components/common/Containers";
 import {Header} from "./components/Header";
-import {eventsStore, eventTypesStore} from "./store";
 
 
 export const ColorModeContext = createContext({
@@ -22,10 +22,10 @@ const App = () => {
         eventTypesStore.fetchEventTypes();
 
         return eventsStore.unsubscribe;
-    }, [])
+    }, []);
 
     const {isAuthenticated} = useAuth0();
-    const {isAdmin} = useRoles()
+    const {isAdmin} = useRoles();
 
     const element = useRoutes(getRoutes(isAuthenticated, isAdmin));
 
@@ -40,11 +40,12 @@ const App = () => {
                     <Header/>
                     <Container>
                         {element}
+                        {/*<EventsList events={eventsStore.events}/>*/}
                     </Container>
                 </AppWrapper>
             </ThemeProvider>
         </ColorModeContext.Provider>
     );
-}
+};
 
 export default App;

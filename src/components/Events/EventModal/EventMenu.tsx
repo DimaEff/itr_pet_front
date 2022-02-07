@@ -4,6 +4,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 import {IconButton} from "../../common/Buttons";
 import {ConfirmDialog, ConfirmDialogProps} from "../../common/Dialogs";
+import {eventsStore} from "../../../store";
 
 
 interface EventMenuProps {
@@ -35,7 +36,7 @@ const EventMenu: FC<EventMenuProps> = ({eventId}) => {
     const handleOpenDeleteConfirm = () => {
         setModal({
             open: true,
-            onConfirm: () => console.log(`delete event ${eventId}`),
+            onConfirm: () => eventsStore.deleteEvent(eventId),
             title: 'Delete this event?',
         });
     }
