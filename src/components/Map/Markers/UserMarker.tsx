@@ -3,6 +3,7 @@ import {Coords} from 'google-map-react';
 import AccessibilityNewRoundedIcon from "@mui/icons-material/AccessibilityNewRounded";
 
 import MapIconContainer from "../MapIconContainer";
+import {Box} from "@mui/material";
 
 
 interface UserMarkerProps extends Coords {
@@ -11,11 +12,11 @@ interface UserMarkerProps extends Coords {
 
 const UserMarker: FC<UserMarkerProps> = ({disabled}) => {
     return (
-        <>
+        <Box sx={{pointerEvents: 'none'}}>
             <MapIconContainer disabled={disabled}>
                 <AccessibilityNewRoundedIcon fontSize={'large'}/>
             </MapIconContainer>
-        </>
+        </Box>
     );
 };
 

@@ -8,6 +8,8 @@ import {useRoles, useTheme, useTokenForRequests} from './hooks';
 import {getRoutes} from './routing';
 import {AppWrapper, Container} from "./components/common/Containers";
 import {Header} from "./components/Header";
+import EventsList from "./components/Events/EventsList/EventsList";
+import {observer} from "mobx-react-lite";
 
 
 export const ColorModeContext = createContext({
@@ -15,7 +17,7 @@ export const ColorModeContext = createContext({
     }
 });
 
-const App = () => {
+const App = observer(() => {
     // init app
     useEffect(() => {
         eventsStore.subscribe();
@@ -40,12 +42,12 @@ const App = () => {
                     <Header/>
                     <Container>
                         {element}
-                        {/*<EventsList events={eventsStore.events}/>*/}
+                        <EventsList events={eventsStore.events}/>
                     </Container>
                 </AppWrapper>
             </ThemeProvider>
         </ColorModeContext.Provider>
     );
-};
+});
 
 export default App;

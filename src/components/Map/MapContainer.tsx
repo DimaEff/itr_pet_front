@@ -10,7 +10,8 @@ import useUserLocation from "../../hooks/useUserLocation";
 
 
 const MapContainer = () => {
-    const [center, setCenter] = useState<Coords>({lat: 0, lng: 0});
+    const [center, setCenter] = useState<Coords>();
+
     const [open, setOpen] = useState(false);
 
     const {isAllowedLocation} = useUserLocation();

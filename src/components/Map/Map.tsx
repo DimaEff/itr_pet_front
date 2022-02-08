@@ -11,7 +11,7 @@ import useUserLocation from "../../hooks/useUserLocation";
 
 
 interface MapProps {
-    center: Coords;
+    center: Coords | undefined;
     setCenter: (coords: Coords) => void;
     disabled: boolean;
 }
@@ -19,23 +19,21 @@ interface MapProps {
 // forwardRef and observer error
 const Map: FC<MapProps> = observer(({center, setCenter, disabled}) => {
     const theme = useTheme();
-
     const urlKey = process.env.REACT_APP_GOOGLE_API_KEY || '';
 
     const {coords} = useUserLocation();
-    const defaultCenter: Coords = coords || {lat: 59.937500, lng: 30.308611};
 
     const mapRef = useRef<Element | null>(null);
     const handleLoaded = ({ref}: { ref: Element | null }) => {
         mapRef.current = ref;
-        setCenter(defaultCenter);
+        setCenter(coords);
     }
 
     return (
         <>
             <GoogleMap
                 bootstrapURLKeys={{key: urlKey}}
-                defaultCenter={defaultCenter}
+                defaultCenter={coords}
                 center={center}
                 defaultZoom={12}
                 margin={[50, 50, 50, 50]}
@@ -57,7 +55,6 @@ const Map: FC<MapProps> = observer(({center, setCenter, disabled}) => {
                 }
                 {(mapRef && !disabled) && <UserMarker disabled={disabled} {...coords}/>}
             </GoogleMap>
-            <button onClick={() => console.log(eventsStore.events)}>show events</button>
         </>
     );
 })

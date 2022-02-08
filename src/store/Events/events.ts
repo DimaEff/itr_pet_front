@@ -63,25 +63,29 @@ class Events extends WebSocket {
     constructor() {
         super({
             socketName: 'events',
-            onChange: (data) => {
-                console.log('events', data);
-                this.events = data
-            },
+            onChange: (data) => this._setEvents(data),
         });
         makeObservable(this, {
             events: observable,
             createEvent: action,
             deleteEvent: action,
+            _setEvents: action,
             eventsWithValidDate: computed,
         });
     }
 
     createEvent = (dto: CreateEventDto) => {
+        console.log('create an event')
         this._socket?.emit('events.create', dto);
     }
 
     deleteEvent = (id: string) => {
         this._socket?.emit('events.delete', id);
+    }
+
+    _setEvents = (events: IEvent[]) => {
+        console.log('events', events);
+        this.events = events;
     }
 
     get eventsWithValidDate() {

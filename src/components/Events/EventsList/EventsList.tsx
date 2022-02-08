@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import {Stack} from "@mui/material";
 
 import {IEvent} from "../../../store";
-import EventCard from '../EventModal/EventCard';
+import EventCard from '../EventCard/EventCard';
 
 
 interface EventListProps {

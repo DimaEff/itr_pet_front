@@ -11,7 +11,7 @@ const Container: FC<ContainerProps> = ({children}) => {
         <MContainer
             maxWidth={'md'}
             sx={{
-                height: '100vh',
+                // height: '100vh',
                 bgcolor: 'background.default',
                 color: 'text.primary',
             }}

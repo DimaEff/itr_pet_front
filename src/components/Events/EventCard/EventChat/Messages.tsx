@@ -8,8 +8,8 @@ import Message from "./Message";
 
 const Messages = observer(() => {
     return (
-        <AccordionDetails sx={{maxHeight: '400px', overflowY: 'auto'}}>
-            <Stack spacing={1}>
+        <AccordionDetails sx={{maxHeight: '360px', overflowY: 'auto'}}>
+            <Stack spacing={1} direction={'column-reverse'}>
                 {eventChatStore.messages.map(m => <Message key={m._id} message={m}/>)}
             </Stack>
         </AccordionDetails>

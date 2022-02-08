@@ -1,23 +1,27 @@
 import React, {FC, useEffect, useState} from 'react';
 import {useAuth0} from "@auth0/auth0-react";
 import {Accordion, AccordionSummary} from "@mui/material";
+import {observer} from "mobx-react-lite";
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import ChatRoundedIcon from '@mui/icons-material/ChatRounded';
 
 import {eventChatStore} from "../../../../store";
 import {CreateMessageForm} from "../../../../store/EventChat/dto/createMessage.dto";
 import EventChatForm from "./EventChatForm";
 import Messages from "./Messages";
+import {IconButton} from "../../../common/Buttons";
 
 
 interface ChatProps {
     eventId: string;
 }
 
-const EventChat: FC<ChatProps> = ({eventId}) => {
+const EventChat: FC<ChatProps> = observer(({eventId}) => {
     const {user} = useAuth0();
 
     const [open, setOpen] = useState(false);
     useEffect(() => {
-        if (open && !eventChatStore.connected) {
+        if (open && !eventChatStore.connect) {
             eventChatStore.subscribe(eventId);
         }
 
@@ -31,7 +35,7 @@ const EventChat: FC<ChatProps> = ({eventId}) => {
 
         eventChatStore.message({
             eid: eventId,
-            uid: user?.sub,
+            uid: user.sub,
             ...data
         });
     }
@@ -43,18 +47,34 @@ const EventChat: FC<ChatProps> = ({eventId}) => {
                 zIndex: 2,
                 position: 'absolute',
                 bottom: 0,
+                display: 'flex',
+                flexFlow: 'column',
+                justifyContent: 'flex-end',
                 width: '100%',
                 maxHeight: '100%',
                 height: open ? '100%' : 'auto',
             }}
         >
-            <AccordionSummary>
-                Chat
+            <AccordionSummary
+                sx={{
+                    position: 'absolute',
+                    top: open ? 0 : -60,
+                    right: 0,
+                    backgroundColor: 'transparent',
+                }}
+            >
+                <IconButton>
+                    {
+                        open ?
+                            <CloseRoundedIcon/>
+                            : <ChatRoundedIcon/>
+                    }
+                </IconButton>
             </AccordionSummary>
-            <Messages />
+            <Messages/>
             <EventChatForm onMessage={handleMessage}/>
         </Accordion>
     );
-};
+});
 
 export default EventChat;

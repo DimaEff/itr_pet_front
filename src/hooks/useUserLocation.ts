@@ -19,8 +19,9 @@ const positionError = async (): Promise<void> => {
 }
 
 const useUserLocation = (): IUseUserLocation => {
-    const [lat, setLat] = useState(0);
-    const [lng, setLng] = useState(0);
+    // coords of SPb
+    const [lat, setLat] = useState(59.937500);
+    const [lng, setLng] = useState(30.308611);
 
     const [isAllowedLocation, setIsAllowedLocation] = useState(false);
 

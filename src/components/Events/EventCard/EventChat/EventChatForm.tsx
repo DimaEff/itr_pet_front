@@ -15,7 +15,7 @@ interface EventChatFormProps {
 }
 
 const schema: SchemaOf<CreateMessageForm> = object({
-    message: string().required().min(3).max(512),
+    message: string().required().min(1).max(512),
 });
 
 const EventChatForm: FC<EventChatFormProps> = ({onMessage}) => {
