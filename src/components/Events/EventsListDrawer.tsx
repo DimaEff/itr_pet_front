@@ -1,5 +1,5 @@
 import React from 'react';
-import {Stack, SwipeableDrawer} from "@mui/material";
+import {Box, Stack, SwipeableDrawer} from "@mui/material";
 import {observer} from "mobx-react-lite";
 
 import {appStore, eventsStore} from "../../store";
@@ -19,16 +19,18 @@ const EventsListDrawer = observer(() => {
                 onClose={() => setDrawerOpen(false)}
                 onOpen={() => setDrawerOpen(true)}
             >
-                <Stack spacing={1} width={345}>
-                    {
-                        events.map(e => <EventCard
-                            key={e._id}
-                            event={e}
-                            withoutChat
-                            withMapPointer
-                        />)
-                    }
-                </Stack>
+                <Box p={1}>
+                    <Stack spacing={1} width={345}>
+                        {
+                            events.map(e => <EventCard
+                                key={e._id}
+                                event={e}
+                                withoutChat
+                                withMapPointer
+                            />)
+                        }
+                    </Stack>
+                </Box>
             </SwipeableDrawer>
         </>
     );

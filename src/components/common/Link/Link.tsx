@@ -6,6 +6,7 @@ import {Box, Typography, TypographyProps} from "@mui/material";
 interface LinkProps {
     wrapperComponent?: React.FC;
     wrapperProps?: any;
+    onNavigate?: () => void;
 }
 
 const Link: FC<LinkProps & NavigateProps & TypographyProps> = (
@@ -14,13 +15,19 @@ const Link: FC<LinkProps & NavigateProps & TypographyProps> = (
         sx,
         wrapperComponent,
         wrapperProps,
+        onNavigate,
         ...props
     }) => {
     const navigate = useNavigate();
     const Wrapper = wrapperComponent || Box;
 
+    const handleNavigate = () => {
+        onNavigate && onNavigate();
+        navigate(to)
+    }
+
     return (
-        <Wrapper onClick={() => navigate(to)} {...wrapperProps}>
+        <Wrapper onClick={handleNavigate} {...wrapperProps}>
             <Typography
                 sx={{
                     cursor: 'pointer',

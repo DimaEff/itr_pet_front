@@ -20,12 +20,12 @@ const MapContainer = () => {
     );
 
     return <Box
-        sx={{
+        sx={(theme) => ({
             width: '100%',
-            height: '550px',
+            height: '85vh',
             position: 'relative',
             margin: '12px 0',
-        }}
+        })}
     >
         <Map disabled={disabled}/>
         <MapBar disabled={disabled} setOpen={setOpen}/>

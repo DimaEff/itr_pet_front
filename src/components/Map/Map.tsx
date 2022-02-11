@@ -14,7 +14,6 @@ interface MapProps {
     disabled: boolean;
 }
 
-// forwardRef and observer error
 const Map: FC<MapProps> = observer(({disabled}) => {
     const {mapCenter, setMapCenter} = appStore;
 
@@ -38,7 +37,6 @@ const Map: FC<MapProps> = observer(({disabled}) => {
         <>
             <GoogleMap
                 bootstrapURLKeys={{key: urlKey}}
-                defaultCenter={mapCenter}
                 center={mapCenter}
                 defaultZoom={12}
                 margin={[50, 50, 50, 50]}

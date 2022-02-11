@@ -23,8 +23,16 @@ const UserMenu: FC<UserProfileProps> = () => {
     }
 
     const handleClose = () => {
+        console.log('close');
         setAnchorElUser(null);
     }
+
+    const getOptions = (path: string) => ({
+        onNavigate: handleClose,
+        key: path,
+        to: path,
+        wrapperComponent: MenuItem
+    });
 
     return (
         <Box>
@@ -49,14 +57,16 @@ const UserMenu: FC<UserProfileProps> = () => {
                 onClose={handleClose}
             >
                 {
-                    userMenuRoutes.map(({path, label}) => <Link key={path} to={path} wrapperComponent={MenuItem}>
-                        {label}
-                    </Link>)
+                    userMenuRoutes
+                        .map(({path, label}) => <Link {...getOptions(path)}>
+                            {label}
+                        </Link>)
                 }
                 {
-                    isAdmin && adminMenuRoutes.map(({path, label}) => <Link key={path} to={path} wrapperComponent={MenuItem}>
-                        {label}
-                    </Link>)
+                    isAdmin && adminMenuRoutes
+                        .map(({path, label}) => <Link {...getOptions(path)}>
+                            {label}
+                        </Link>)
                 }
                 <MenuItem onClick={() => logout({returnTo: window.location.origin})}>
                     <Typography textAlign="center">Log Out</Typography>

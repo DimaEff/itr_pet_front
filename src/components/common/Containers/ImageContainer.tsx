@@ -1,5 +1,6 @@
 import React, {FC, useState} from 'react';
-import {Box, Modal} from "@mui/material";
+import {Box} from "@mui/material";
+import {CenteredModal} from "../Modals";
 
 
 interface ImageContainerProps {
@@ -39,14 +40,14 @@ const ImageContainer: FC<ImageContainerProps> = (
                         width: '100%',
                         height: '100%',
                         objectFit: 'cover',
-                        cursor: fullImg ? 'pointer': 'default',
+                        cursor: fullImg ? 'pointer' : 'default',
                     },
                 }}
                 onClick={handleOpen}
             >
                 <img src={src} alt={'image'}/>
             </Box>
-            <Modal
+            <CenteredModal
                 open={open}
                 onClose={() => setOpen(false)}
             >
@@ -61,9 +62,8 @@ const ImageContainer: FC<ImageContainerProps> = (
                 }}>
                     <img src={src} alt={'image'}/>
                 </Box>
-            </Modal>
+            </CenteredModal>
         </>
-
     );
 };
 
