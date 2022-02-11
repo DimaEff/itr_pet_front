@@ -1,25 +1,34 @@
 import React, {FC} from 'react';
 import useUserLocation from "../../../hooks/useUserLocation";
-import {Coords} from "google-map-react";
 import AccessibilityNewRoundedIcon from "@mui/icons-material/AccessibilityNewRounded";
 
 import {IconButton} from "../../common/Buttons";
-import MapIconContainer from "../MapIconContainer";
+import MapBarItem from "../MapBarItem";
+import {observer} from "mobx-react-lite";
+import {appStore} from "../../../store";
 
 
 export interface ShowMeProps {
-    setCenter: (coords: Coords) => void;
     disabled: boolean;
 }
 
-const ShowMe: FC<ShowMeProps> = ({setCenter, disabled}) => {
+const ShowMe: FC<ShowMeProps> = observer(({disabled}) => {
+    const {setMapCenter} = appStore;
     const {coords} = useUserLocation();
 
-    return <IconButton disabled={disabled} onClick={() => setCenter(coords)}>
-        <MapIconContainer disabled={disabled}>
+    const handleShowMe = () => {
+        if (!coords) {
+            return;
+        }
+
+        setMapCenter(coords);
+    }
+
+    return <IconButton disabled={disabled} onClick={handleShowMe}>
+        <MapBarItem disabled={disabled}>
             <AccessibilityNewRoundedIcon fontSize={'large'}/>
-        </MapIconContainer>
+        </MapBarItem>
     </IconButton>
-};
+});
 
 export default ShowMe;

@@ -17,15 +17,17 @@ interface ChatProps {
 }
 
 const EventChat: FC<ChatProps> = observer(({eventId}) => {
+    const {subscribe, unsubscribe, message} = eventChatStore;
+
     const {user} = useAuth0();
 
     const [open, setOpen] = useState(false);
     useEffect(() => {
         if (open && !eventChatStore.connect) {
-            eventChatStore.subscribe(eventId);
+            subscribe(eventId);
         }
 
-        return eventChatStore.unsubscribe;
+        return unsubscribe;
     }, [open, eventId]);
 
     const handleMessage = (data: CreateMessageForm) => {
@@ -33,7 +35,7 @@ const EventChat: FC<ChatProps> = observer(({eventId}) => {
             return;
         }
 
-        eventChatStore.message({
+        message({
             eid: eventId,
             uid: user.sub,
             ...data
@@ -71,7 +73,7 @@ const EventChat: FC<ChatProps> = observer(({eventId}) => {
                     }
                 </IconButton>
             </AccordionSummary>
-            <Messages/>
+            <Messages open={open}/>
             <EventChatForm onMessage={handleMessage}/>
         </Accordion>
     );

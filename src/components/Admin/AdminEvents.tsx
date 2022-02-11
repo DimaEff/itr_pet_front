@@ -3,7 +3,6 @@ import {observer} from "mobx-react-lite";
 
 import {eventsStore} from "../../store";
 import {Box} from "@mui/material";
-import {EventList} from "../Events";
 
 
 const AdminEvents = observer(() => {
@@ -15,7 +14,6 @@ const AdminEvents = observer(() => {
                 <img style={{width: '100px', height: '100px'}} src={e.images[0].path} alt="event image"/>
                 <button onClick={() => eventsStore.deleteEvent(e._id)}>delete event</button>
             </Box>)}
-            <EventList events={eventsStore.events}/>
         </>
     );
 });

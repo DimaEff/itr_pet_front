@@ -5,7 +5,7 @@ import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import {eventTypesStore, IEventType} from "../../../store";
 import {ContainerAbove} from "../../common/Containers";
 import {IconButton} from "../../common/Buttons";
-import {ConfirmDialog} from "../../common/Dialogs";
+import {ConfirmDialog} from "../../common/Modals";
 
 
 interface EventTypeProps {

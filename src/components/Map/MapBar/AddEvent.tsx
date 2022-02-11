@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 
 import {IconButton} from "../../common/Buttons";
-import MapIconContainer from "../MapIconContainer";
+import MapBarItem from "../MapBarItem";
 
 
 export interface AddEventProps {
@@ -13,9 +13,9 @@ export interface AddEventProps {
 const AddEvent: FC<AddEventProps> = ({setOpen, disabled}) => {
     return (
         <IconButton disabled={disabled} onClick={() => setOpen(true)}>
-            <MapIconContainer disabled={disabled}>
+            <MapBarItem disabled={disabled}>
                 <AddCircleRoundedIcon fontSize={'large'}/>
-            </MapIconContainer>
+            </MapBarItem>
         </IconButton>
     );
 };

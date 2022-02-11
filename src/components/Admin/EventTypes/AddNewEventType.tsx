@@ -1,5 +1,5 @@
 import React, {FC, useMemo, useState} from 'react';
-import {Card, CardActions, CardContent, Modal, Stack} from "@mui/material";
+import {Card, CardActions, CardContent, Stack} from "@mui/material";
 import {useForm} from "react-hook-form";
 import {object, SchemaOf, string} from "yup";
 
@@ -10,6 +10,7 @@ import {FileInput, Form, Input} from "../../common/Form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {ImageWithPreview} from "../../../types";
 import {getFileUrl, getMuiErrorAndMessageCreator} from "../../../utils/helper";
+import CenteredModal from "../../common/Modals/CenteredModal";
 
 
 interface AddNewEventTypeProps {
@@ -64,7 +65,7 @@ const AddNewEventType: FC<AddNewEventTypeProps> = ({open, onClose}) => {
     const formId = 'add-new-event-type';
 
     return (
-        <Modal
+        <CenteredModal
             open={open}
             onClose={handleClose}
         >
@@ -93,7 +94,7 @@ const AddNewEventType: FC<AddNewEventTypeProps> = ({open, onClose}) => {
                     </Button>
                 </CardActions>
             </Card>
-        </Modal>
+        </CenteredModal>
     );
 };
 

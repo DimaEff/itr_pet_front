@@ -13,6 +13,7 @@ interface IWebSocket {
 export class WebSocket {
     _socket: Socket | null = null;
     connect: boolean = false;
+    pending: boolean = false;
 
     private readonly _baseUrl: string;
     private readonly _socketName: string;
@@ -24,12 +25,16 @@ export class WebSocket {
         this._baseUrl = `${process.env.REACT_APP_SERVER_WS}/${socketName}`;
         this._socketName = socketName;
         this._socketOptions = socketOptions;
-        this._handleChange = onChange;
+        this._handleChange = (data: any) => {
+            onChange(data);
+            this.pending = false;
+        };
         this._handleConnect = onConnect;
 
         makeObservable(this, {
             _socket: observable,
             connect: observable,
+            pending: observable,
             _handleChange: action,
             // _handleConnect: this._handleConnect ? action :flow,
             subscribe: action,
@@ -40,6 +45,7 @@ export class WebSocket {
     subscribe = (connectData?: any) => {
         const jwt_token = localStorage.getItem('auth0_token');
         this._socket = io(this._baseUrl, {query: {jwt_token}}).connect();
+        this.pending = true;
         this._socket.emit(this._getSubscribeMessage('connect'), connectData);
         this.connect = true;
         this._socket.on(this._getSubscribeMessage('connected'), this._handleConnect || this._handleChange);

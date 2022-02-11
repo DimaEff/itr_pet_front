@@ -1,9 +1,9 @@
-import React, {FC, useEffect, useRef} from 'react';
-import GoogleMap, {Coords} from "google-map-react";
+import React, {FC, useRef} from 'react';
+import GoogleMap from "google-map-react";
 import {useTheme} from "@mui/material";
 import {observer} from "mobx-react-lite";
 
-import {eventsStore} from '../../store';
+import {appStore, eventsStore} from '../../store';
 import {MapDarkStyle, MapLightStyle} from "./mapStyles";
 import EventMarker from "./Markers/EventMarker";
 import UserMarker from "./Markers/UserMarker";
@@ -11,13 +11,13 @@ import useUserLocation from "../../hooks/useUserLocation";
 
 
 interface MapProps {
-    center: Coords | undefined;
-    setCenter: (coords: Coords) => void;
     disabled: boolean;
 }
 
 // forwardRef and observer error
-const Map: FC<MapProps> = observer(({center, setCenter, disabled}) => {
+const Map: FC<MapProps> = observer(({disabled}) => {
+    const {mapCenter, setMapCenter} = appStore;
+
     const theme = useTheme();
     const urlKey = process.env.REACT_APP_GOOGLE_API_KEY || '';
 
@@ -26,18 +26,23 @@ const Map: FC<MapProps> = observer(({center, setCenter, disabled}) => {
     const mapRef = useRef<Element | null>(null);
     const handleLoaded = ({ref}: { ref: Element | null }) => {
         mapRef.current = ref;
-        setCenter(coords);
+
+        if (!coords) {
+            return;
+        }
+
+        setMapCenter(coords);
     }
 
     return (
         <>
             <GoogleMap
                 bootstrapURLKeys={{key: urlKey}}
-                defaultCenter={coords}
-                center={center}
+                defaultCenter={mapCenter}
+                center={mapCenter}
                 defaultZoom={12}
                 margin={[50, 50, 50, 50]}
-                onChange={({center}) => setCenter(center)}
+                onChange={({center}) => setMapCenter(center)}
                 options={{
                     styles: theme.palette.mode === 'light' ? MapLightStyle : MapDarkStyle,
                     fullscreenControl: false,
@@ -53,7 +58,7 @@ const Map: FC<MapProps> = observer(({center, setCenter, disabled}) => {
                         lng={e.lng}
                     />)
                 }
-                {(mapRef && !disabled) && <UserMarker disabled={disabled} {...coords}/>}
+                {(mapRef && !disabled && coords) && <UserMarker disabled={disabled} {...coords}/>}
             </GoogleMap>
         </>
     );

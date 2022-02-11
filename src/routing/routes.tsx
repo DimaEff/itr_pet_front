@@ -66,7 +66,7 @@ export const getRoutes = (isAuth: boolean, isAdmin: boolean): IRoute[] => [
             {
                 path: 'event-types',
                 element: <AdminEventTypes/>,
-                label: 'EventCard Types',
+                label: 'Event Types',
                 menuName: 'admin.children',
             },
         ]

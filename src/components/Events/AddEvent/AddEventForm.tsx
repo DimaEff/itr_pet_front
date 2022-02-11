@@ -31,8 +31,8 @@ const checkStartDate = (endDate: Date, schema: any) => {
 
 const schema: SchemaOf<CreateEventForm> = object({
     title: string().required().min(3).max(32),
-    description: string().required().min(3).max(512),
-    type: string().required().min(3).max(32),
+    description: string().required().min(32).max(1024),
+    type: string().required(),
     startDate: date().required()
         .min(new Date(), 'Min start date is now')
         .when('endDate', checkStartDate)
@@ -45,6 +45,8 @@ const schema: SchemaOf<CreateEventForm> = object({
 });
 
 const AddEventForm: FC<AddEventFormProps> = observer(({formId, submit}) => {
+    const {eventTypes} = eventTypesStore;
+
     const {register, handleSubmit, control, formState: {errors}, setValue} = useForm<CreateEventForm>({
         mode: 'onBlur',
         resolver: yupResolver(schema),
@@ -83,16 +85,16 @@ const AddEventForm: FC<AddEventFormProps> = observer(({formId, submit}) => {
                     {...getErrorAndMessage('title')}
                 />
                 <FormControl sx={{ml: 1, minWidth: 140}}>
-                    <InputLabel id="event-type-label">EventCard type</InputLabel>
+                    <InputLabel id="event-type-label">Type</InputLabel>
                     <Select
                         name={'type'}
                         control={control}
-                        labelId="event-type-label"
-                        id="event-type"
-                        label="EventCard type"
-                        {...getErrorAndMessage('description', true)}
+                        labelId={"event-type-label"}
+                        id={"event-type"}
+                        label={"Type"}
+                        {...getErrorAndMessage('type', true)}
                     >
-                        {eventTypesStore.eventTypes.map(e => <MenuItem key={e.value} value={e.value}>
+                        {eventTypes.map(e => <MenuItem key={e.value} value={e.value}>
                             <SelectEventItem key={e.value} eventType={e}/>
                         </MenuItem>)}
                     </Select>

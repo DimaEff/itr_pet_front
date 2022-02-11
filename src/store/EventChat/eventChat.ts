@@ -1,5 +1,4 @@
-import {action, makeAutoObservable, makeObservable, observable} from "mobx";
-import {io, Socket} from "socket.io-client";
+import {action, makeObservable, observable} from "mobx";
 
 import {IMessage} from "./types";
 import {CreateMessageDto} from "./dto/createMessage.dto";

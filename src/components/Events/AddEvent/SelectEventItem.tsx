@@ -2,7 +2,8 @@ import React, {FC} from 'react';
 import {Box, Typography} from "@mui/material";
 
 import {IEventType} from "../../../store";
-import EventIcon from "../Markers/EventIcon";
+import EventIcon from "../../Map/Markers/EventIcon";
+import {useMenu} from "../../../hooks";
 
 
 interface SelectEventItemProps {
@@ -12,8 +13,7 @@ interface SelectEventItemProps {
 const SelectEventItem: FC<SelectEventItemProps> = ({eventType}) => {
     return (
         <Box display={'flex'}>
-            {/*<EventIcon eventType={eventType}/>*/}
-            <Typography marginLeft={1} variant={'h5'}>
+            <Typography marginLeft={1} variant={'body1'}>
                 {eventType.title}
             </Typography>
         </Box>

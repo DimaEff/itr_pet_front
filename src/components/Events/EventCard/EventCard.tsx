@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, forwardRef} from 'react';
 import {Card, CardContent, Typography} from "@mui/material";
 
 import {IEvent} from "../../../store";
@@ -11,6 +11,7 @@ import EventChat from "./EventChat/EventChat";
 
 interface EventProps {
     event: IEvent;
+    withMapPointer?: boolean;
     withoutChat?: boolean;
 }
 
@@ -25,7 +26,7 @@ const lorem = new LoremIpsum({
     }
 });
 
-const EventCard: FC<EventProps> = ({event, withoutChat}) => {
+const EventCard: FC<EventProps> = forwardRef(({event, withoutChat, withMapPointer}, ref) => {
 
     return (
         <>
@@ -40,15 +41,14 @@ const EventCard: FC<EventProps> = ({event, withoutChat}) => {
                     }}
                 >
                     <Typography variant="body2" color="text.secondary">
-                        {/*{event.description}*/}
-                        {lorem.generateParagraphs(2)}
+                        {event.description}
                     </Typography>
                 </CardContent>
-                <Actions event={event}/>
+                <Actions withMapPointer={!!withMapPointer} event={event}/>
                 {!withoutChat && <EventChat eventId={event._id}/>}
             </Card>
         </>
     );
-};
+});
 
 export default EventCard;

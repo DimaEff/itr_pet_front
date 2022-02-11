@@ -1,3 +1,4 @@
+export {default as appStore} from './App';
 export {default as userStore} from './User/user';
 export {default as adminStore} from './Admin/admin';
 export {default as eventsStore} from './Events/events';

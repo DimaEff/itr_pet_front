@@ -1,5 +1,5 @@
 import React, {FC, useState} from 'react';
-import {Card, CardActions, CardContent, Modal} from "@mui/material";
+import {Card, CardActions, CardContent} from "@mui/material";
 import {useAuth0} from "@auth0/auth0-react";
 
 import {eventsStore} from '../../../store';
@@ -9,6 +9,7 @@ import AddEventForm from "./AddEventForm";
 import AddedImages from "./AddedImages/AddedImages";
 import useUserLocation from "../../../hooks/useUserLocation";
 import {CreateEventForm} from "../../../store/Events/dto/create-event.dto";
+import {CenteredModal} from "../../common/Modals";
 
 
 interface AddEventProps {
@@ -19,6 +20,8 @@ interface AddEventProps {
 export type AddedImg = [string, File];
 
 const AddEventModal: FC<AddEventProps> = ({open, setOpen}) => {
+    const {createEvent, pending} = eventsStore;
+
     const [images, setImages] = useState<AddedImg[]>([]);
 
     const addImages = (images: AddedImg[]) => {
@@ -34,14 +37,15 @@ const AddEventModal: FC<AddEventProps> = ({open, setOpen}) => {
     const {user} = useAuth0();
     const {coords} = useUserLocation();
     const handleCreateEvent = (data: CreateEventForm) => {
-        if (!user?.sub || !images.length) {
-            console.log('have not user or images');
+        if (!user?.sub || !images.length || !coords) {
+            console.log('have not user, images or user coords');
             console.log(user?.sub, images.length);
             return
         }
 
         const files: File[] = images.map(i => i[1]);
-        eventsStore.createEvent({...data, ...coords, files, creatorId: user.sub});
+        createEvent({...data, ...coords, files, uid: user.sub});
+        setOpen(false);
     }
 
     const onClose = () => {
@@ -52,7 +56,7 @@ const AddEventModal: FC<AddEventProps> = ({open, setOpen}) => {
     const formId = 'event';
 
     return (
-        <Modal
+        <CenteredModal
             open={open}
             onClose={onClose}
         >
@@ -75,12 +79,12 @@ const AddEventModal: FC<AddEventProps> = ({open, setOpen}) => {
                         mb: 5,
                     }}
                 >
-                    <Button>Cancel</Button>
-                    <Button form={formId} type={'submit'}>Add</Button>
+                    <Button loading={pending}>Cancel</Button>
+                    <Button loading={pending} form={formId} type={'submit'}>Add</Button>
                 </CardActions>
                 <AddedImages images={images} deleteImages={deleteImages}/>
             </Card>
-        </Modal>
+        </CenteredModal>
     );
 };
 

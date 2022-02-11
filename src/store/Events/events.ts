@@ -1,5 +1,4 @@
-import {action, computed, flow, makeAutoObservable, makeObservable, observable} from "mobx";
-import {io, Socket} from "socket.io-client";
+import {action, computed, makeObservable, observable} from "mobx";
 import {parseISO} from 'date-fns';
 
 import {IEvent} from "./types";
@@ -60,6 +59,10 @@ import {WebSocket} from "../WebSocket";
 class Events extends WebSocket {
     events: IEvent[] = [];
 
+    get eventsWithValidDate() {
+        return this.events.filter(this.checkDate);
+    }
+
     constructor() {
         super({
             socketName: 'events',
@@ -86,10 +89,6 @@ class Events extends WebSocket {
     _setEvents = (events: IEvent[]) => {
         console.log('events', events);
         this.events = events;
-    }
-
-    get eventsWithValidDate() {
-        return this.events.filter(this.checkDate);
     }
 
     private checkDate = ({startDate, endDate}: IEvent): boolean => {

@@ -1,4 +1,4 @@
-import React, {FC, useMemo} from 'react';
+import React, {FC} from 'react';
 import {AccordionDetails} from "@mui/material";
 import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
@@ -7,7 +7,6 @@ import {SchemaOf, object, string} from "yup";
 import {Button} from "../../../common/Buttons";
 import {CreateMessageForm} from "../../../../store/EventChat/dto/createMessage.dto";
 import {Form, Input} from "../../../common/Form";
-import {getMuiErrorAndMessageCreator} from "../../../../utils/helper";
 
 
 interface EventChatFormProps {
@@ -19,15 +18,10 @@ const schema: SchemaOf<CreateMessageForm> = object({
 });
 
 const EventChatForm: FC<EventChatFormProps> = ({onMessage}) => {
-    const {register, handleSubmit, formState: {errors}, reset} = useForm<CreateMessageForm>({
+    const {register, handleSubmit, reset} = useForm<CreateMessageForm>({
         mode: "onBlur",
         resolver: yupResolver(schema),
     });
-
-    const getMuiErrorAndMessage = useMemo(
-        () => getMuiErrorAndMessageCreator<CreateMessageForm>(errors),
-        [errors]
-    );
 
     const handleMessage = (data: CreateMessageForm) => {
         onMessage(data);
@@ -37,7 +31,7 @@ const EventChatForm: FC<EventChatFormProps> = ({onMessage}) => {
     return (
         <AccordionDetails>
             <Form handleSubmit={handleSubmit(handleMessage)}>
-                <Input register={register('message')} {...getMuiErrorAndMessage('message')}/>
+                <Input register={register('message')}/>
                 <Button type={'submit'}>
                     message
                 </Button>

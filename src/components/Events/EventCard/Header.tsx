@@ -5,6 +5,7 @@ import {red} from "@mui/material/colors";
 import {IEvent} from "../../../store";
 import {isoToDateString} from "../../../utils/helper";
 import EventMenu from "./EventMenu";
+import EventIcon from "../../Map/Markers/EventIcon";
 
 
 interface CardHeaderProps {
@@ -16,12 +17,9 @@ const Header: FC<CardHeaderProps> = ({event}) => {
         <>
             <CardHeader
                 avatar={
-                    <Avatar sx={{bgcolor: red[500]}} aria-label="recipe">
-                        D
-                        {/*{event.uid[0]}*/}
-                    </Avatar>
+                    <EventIcon eventType={event.type}/>
                 }
-                action={<EventMenu eventId={event._id}/>}
+                action={<EventMenu event={event}/>}
                 title={event.title}
                 subheader={<Box>
                     <Typography variant="caption" component={'div'}>

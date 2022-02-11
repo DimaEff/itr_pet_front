@@ -3,7 +3,7 @@ import {Coords} from "google-map-react";
 
 
 interface IUseUserLocation {
-    coords: Coords;
+    coords: Coords | undefined;
     isAllowedLocation: boolean;
 }
 
@@ -19,16 +19,19 @@ const positionError = async (): Promise<void> => {
 }
 
 const useUserLocation = (): IUseUserLocation => {
-    // coords of SPb
-    const [lat, setLat] = useState(59.937500);
-    const [lng, setLng] = useState(30.308611);
+    const [coords, setCoords] = useState<Coords | undefined>()
 
     const [isAllowedLocation, setIsAllowedLocation] = useState(false);
 
-    const setPositions = (position: GeolocationPosition) => {
-        setLat(position.coords.latitude);
-        setLng(position.coords.longitude);
-        setIsAllowedLocation(true);
+    const setPositions = (position?: GeolocationPosition, isAllowed = true) => {
+        if (position) {
+            setCoords({
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+            });
+        }
+
+        setIsAllowedLocation(isAllowed);
     }
 
     useEffect(() => {
@@ -36,14 +39,14 @@ const useUserLocation = (): IUseUserLocation => {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(setPositions, positionError);
             } else {
-                alert('Sorry, geolocation non support in your browser');
+                setPositions();
             }
         }
 
         getPosition();
     }, [])
 
-    return {coords: {lat, lng}, isAllowedLocation};
+    return {coords, isAllowedLocation};
 }
 
 export default useUserLocation;
