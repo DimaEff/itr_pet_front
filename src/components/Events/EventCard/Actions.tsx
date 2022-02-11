@@ -1,12 +1,14 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useMemo} from 'react';
 import {CardActions} from "@mui/material";
 import FavoriteRoundedIcon from "@mui/icons-material/FavoriteRounded";
 import FavoriteBorderRoundedIcon from "@mui/icons-material/FavoriteBorderRounded";
 import ShareIcon from "@mui/icons-material/Share";
 import LocationSearchingRoundedIcon from '@mui/icons-material/LocationSearchingRounded';
 
-import {appStore, IEvent} from "../../../store";
+import {appStore, eventsStore, IEvent} from "../../../store";
 import {IconButton} from "../../common/Buttons";
+import {useAuth0} from "@auth0/auth0-react";
+import {ILikeOrReport} from "../../../store/Events/types";
 
 
 interface ActionsProps {
@@ -15,13 +17,31 @@ interface ActionsProps {
 }
 
 const Actions: FC<ActionsProps> = ({event, withMapPointer}) => {
+    const {like, unlike} = eventsStore;
     const {setMapCenter, setDrawerOpen} = appStore;
 
-    const [like, setLike] = useState(false);
+    const {user} = useAuth0();
+
+    const liked = useMemo(
+        () => user?.sub && event.likes.includes(user.sub),
+        [event, user]
+    );
 
     const handleLike = () => {
-        // eventsStore.like(event._id);
-        setLike(l => !l);
+        if (!user?.sub) {
+            return;
+        }
+
+        const dto: ILikeOrReport = {
+            uid: user?.sub,
+            eid: event._id,
+        };
+
+        if (liked) {
+            unlike(dto);
+        } else {
+            like(dto);
+        }
     }
 
     const handleSetCenter = () => {
@@ -36,7 +56,7 @@ const Actions: FC<ActionsProps> = ({event, withMapPointer}) => {
         <CardActions disableSpacing>
             <IconButton aria-label="like" onClick={handleLike}>
                 {
-                    like ?
+                    liked ?
                         <FavoriteRoundedIcon color={'error'}/> :
                         <FavoriteBorderRoundedIcon/>
                 }

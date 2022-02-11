@@ -13,4 +13,11 @@ export interface IEvent extends Position {
     images: Image[];
     startDate: string;
     endDate: string;
+    likes: string[];
+    reports: string[];
+}
+
+export interface ILikeOrReport {
+    uid: string;
+    eid: string;
 }

@@ -1,4 +1,4 @@
-import React, {createContext, useEffect, useState} from 'react';
+import React, {createContext, useEffect} from 'react';
 import {ThemeProvider} from '@mui/material/styles';
 import {useRoutes} from 'react-router-dom';
 import {useAuth0} from "@auth0/auth0-react";
@@ -9,10 +9,12 @@ import {getRoutes} from './routing';
 import {AppWrapper, Container} from "./components/common/Containers";
 import {Header} from "./components/Header";
 import {EventsListDrawer} from "./components/Events";
+import {SnackbarAlert} from "./components/common/Different";
 
 
 export const ColorModeContext = createContext({
-    toggleColorMode: () => {}
+    toggleColorMode: () => {
+    }
 });
 
 const App = () => {
@@ -33,19 +35,17 @@ const App = () => {
     useTokenForRequests();
     const {colorMode, theme} = useTheme();
 
-    // for events list drawer control
-    const [drawerOpen, setDrawerOpen] = useState(false);
-
     return (
         <ColorModeContext.Provider value={colorMode}>
             <ThemeProvider theme={theme}>
-                    <AppWrapper>
-                        <Header/>
-                        <Container>
-                            {element}
-                        </Container>
-                        <EventsListDrawer/>
-                    </AppWrapper>
+                <AppWrapper>
+                    <Header/>
+                    <Container>
+                        {element}
+                    </Container>
+                    <EventsListDrawer/>
+                    <SnackbarAlert/>
+                </AppWrapper>
             </ThemeProvider>
         </ColorModeContext.Provider>
     );

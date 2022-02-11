@@ -2,9 +2,9 @@ import React, {FC, useState} from 'react';
 import {Menu, MenuItem} from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
+import {eventsStore, IEvent} from "../../../store";
 import {IconButton} from "../../common/Buttons";
 import {ConfirmDialog, ConfirmDialogProps} from "../../common/Modals";
-import {eventsStore, IEvent} from "../../../store";
 import {useAuth0} from "@auth0/auth0-react";
 
 
@@ -13,7 +13,8 @@ interface EventMenuProps {
 }
 
 const EventMenu: FC<EventMenuProps> = ({event}) => {
-    const {_id, uid} = event;
+    const {report} = eventsStore;
+    const {_id, reports} = event;
 
     const {user} = useAuth0();
 
@@ -33,7 +34,10 @@ const EventMenu: FC<EventMenuProps> = ({event}) => {
     const handleOpenReportConfirm = () => {
         setModal({
             open: true,
-            onConfirm: () => console.log(`report event ${_id}`),
+            onConfirm: () => user?.sub && report({
+                uid: user.sub,
+                eid: _id,
+            }),
             title: 'Report this event?',
         });
     }
@@ -76,7 +80,7 @@ const EventMenu: FC<EventMenuProps> = ({event}) => {
                     horizontal: 'right',
                 }}
             >
-                <MenuItem onClick={handleOpenReportConfirm}>Report</MenuItem>
+                <MenuItem disabled={!user?.sub || reports.includes(user.sub)} onClick={handleOpenReportConfirm}>Report</MenuItem>
                 {/*{uid === user?.sub && <MenuItem onClick={handleOpenDeleteConfirm}>Delete</MenuItem>}*/}
                 <MenuItem onClick={handleOpenDeleteConfirm}>Delete</MenuItem>
             </Menu>

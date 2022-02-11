@@ -1,13 +1,14 @@
 import React, {FC, useState} from 'react';
 import {Position} from "google-map-react";
-import {Icon, Modal, Paper} from "@mui/material";
+import {Icon, Paper} from "@mui/material";
 
 import {IEvent} from '../../../store';
 import EventIcon from "./EventIcon";
 import {EventCard} from "../../Events";
+import {CenteredModal} from "../../common/Modals";
 
 
-interface EventMarkerProps extends Position{
+interface EventMarkerProps extends Position {
     event: IEvent;
 }
 
@@ -33,9 +34,9 @@ const EventMarker: FC<EventMarkerProps> = ({event}) => {
                     <EventIcon eventType={event.type}/>
                 </Icon>
             </Paper>
-            {open && <Modal open={open} onClose={() => setOpen(false)}>
+            {open && <CenteredModal open={open} onClose={() => setOpen(false)}>
                 <EventCard event={event}/>
-            </Modal>}
+            </CenteredModal>}
         </>
 
     );

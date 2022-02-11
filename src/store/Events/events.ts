@@ -1,7 +1,7 @@
 import {action, computed, makeObservable, observable} from "mobx";
 import {parseISO} from 'date-fns';
 
-import {IEvent} from "./types";
+import {IEvent, ILikeOrReport} from "./types";
 import {CreateEventDto} from "./dto/create-event.dto";
 
 import {WebSocket} from "../WebSocket";
@@ -63,6 +63,12 @@ class Events extends WebSocket {
         return this.events.filter(this.checkDate);
     }
 
+    get eventsByLikesCounts() {
+        return this.events
+            .slice()
+            .sort((a, b) => b.likes.length - a.likes.length);
+    }
+
     constructor() {
         super({
             socketName: 'events',
@@ -72,22 +78,36 @@ class Events extends WebSocket {
             events: observable,
             createEvent: action,
             deleteEvent: action,
+            like: action,
+            report: action,
             _setEvents: action,
             eventsWithValidDate: computed,
+            eventsByLikesCounts: computed,
         });
     }
 
     createEvent = (dto: CreateEventDto) => {
-        console.log('create an event')
-        this._socket?.emit('events.create', dto);
+        this._socket?.emit(this._getSubscribeMessage('create'), dto);
     }
 
     deleteEvent = (id: string) => {
-        this._socket?.emit('events.delete', id);
+        this._socket?.emit(this._getSubscribeMessage('delete'), id);
+    }
+
+    like = (dto: ILikeOrReport) => {
+        this._socket?.emit(this._getSubscribeMessage('like'), dto);
+    }
+
+    unlike = (dto: ILikeOrReport) => {
+        this._socket?.emit(this._getSubscribeMessage('unlike'), dto);
+    }
+
+    report = (dto: ILikeOrReport) => {
+        this._socket?.emit(this._getSubscribeMessage('report'), dto);
     }
 
     _setEvents = (events: IEvent[]) => {
-        console.log('events', events);
+        console.log(events);
         this.events = events;
     }
 

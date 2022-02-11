@@ -2,7 +2,7 @@ import React, {FC, useState} from 'react';
 import {Card, CardActions, CardContent} from "@mui/material";
 import {useAuth0} from "@auth0/auth0-react";
 
-import {eventsStore} from '../../../store';
+import {appStore, eventsStore} from '../../../store';
 import {Button} from "../../common/Buttons";
 import AddEventImage from "./AddEventImage/AddEventImage";
 import AddEventForm from "./AddEventForm";
@@ -21,6 +21,7 @@ export type AddedImg = [string, File];
 
 const AddEventModal: FC<AddEventProps> = ({open, setOpen}) => {
     const {createEvent, pending} = eventsStore;
+    const {setSnackbarAlertValues} = appStore;
 
     const [images, setImages] = useState<AddedImg[]>([]);
 
@@ -38,9 +39,8 @@ const AddEventModal: FC<AddEventProps> = ({open, setOpen}) => {
     const {coords} = useUserLocation();
     const handleCreateEvent = (data: CreateEventForm) => {
         if (!user?.sub || !images.length || !coords) {
-            console.log('have not user, images or user coords');
-            console.log(user?.sub, images.length);
-            return
+            setSnackbarAlertValues('Have not images', 'error');
+            return;
         }
 
         const files: File[] = images.map(i => i[1]);
