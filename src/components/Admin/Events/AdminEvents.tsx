@@ -10,7 +10,7 @@ import {useSearch} from "../../../hooks";
 
 const AdminEvents = observer(() => {
     const {searchInput, setSearchInput, searchedValues} = useSearch<IEvent>(
-        eventsStore.events,
+        eventsStore._events,
         {keys: ['title', 'description']},
     );
 

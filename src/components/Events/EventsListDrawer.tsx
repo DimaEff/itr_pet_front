@@ -1,14 +1,27 @@
-import React, {useMemo} from 'react';
-import {Box, Stack, SwipeableDrawer} from "@mui/material";
+import React from 'react';
+import {Box, Stack, SwipeableDrawer, ToggleButton, ToggleButtonGroup, Typography} from "@mui/material";
 import {observer} from "mobx-react-lite";
+import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 
-import {appStore, eventsStore} from "../../store";
+import {appStore, EventFilters, eventFilters, eventsStore} from "../../store";
 import EventCard from './EventCard/EventCard';
 
 
 const EventsListDrawer = observer(() => {
-    const {events, eventsByLikesCounts, eventsWithValidDate} = eventsStore;
+    const {filteredEvents, filters, setFilters} = eventsStore;
     const {drawerOpen, setDrawerOpen} = appStore;
+
+    const handleFilter = (
+        event: React.MouseEvent<HTMLElement>,
+        newFormats: EventFilters[],
+    ) => {
+        setFilters(newFormats);
+    };
+
+    const filtersChildren: {[keys in EventFilters]: React.ReactNode} = {
+        byLikes: <FavoriteRoundedIcon />,
+        validDate: <Typography>NOW</Typography>
+    };
 
     return (
         <>
@@ -19,18 +32,39 @@ const EventsListDrawer = observer(() => {
                 onClose={() => setDrawerOpen(false)}
                 onOpen={() => setDrawerOpen(true)}
             >
-                <Box p={1}>
-                    <Stack spacing={1} width={345}>
-                        {
-                            eventsByLikesCounts.map(e => <EventCard
-                                key={e._id}
-                                event={e}
-                                withoutChat
-                                withMapPointer
-                            />)
-                        }
-                    </Stack>
-                </Box>
+                <Stack spacing={1} p={1}>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'flex-end',
+                            width: '100%',
+                        }}
+                    >
+                        <ToggleButtonGroup
+                            value={filters}
+                            onChange={handleFilter}
+                            aria-label="text formatting"
+                        >
+                            {
+                                eventFilters.map(f => <ToggleButton key={f} value={f} aria-label={f}>
+                                    {filtersChildren[f]}
+                                </ToggleButton>)
+                            }
+                        </ToggleButtonGroup>
+                    </Box>
+                    <Box>
+                        <Stack spacing={1} width={345}>
+                            {
+                                filteredEvents.map(e => <EventCard
+                                    key={e._id}
+                                    event={e}
+                                    withoutChat
+                                    withMapPointer
+                                />)
+                            }
+                        </Stack>
+                    </Box>
+                </Stack>
             </SwipeableDrawer>
         </>
     );

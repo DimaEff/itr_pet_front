@@ -8,8 +8,8 @@ import {Box} from "@mui/material";
 const AdminEvents = observer(() => {
     return (
         <>
-            {eventsStore.events.length === 0 && <Box>Have not events</Box>}
-            {eventsStore.events.map(e => <Box key={e._id}>
+            {eventsStore._events.length === 0 && <Box>Have not events</Box>}
+            {eventsStore._events.map(e => <Box key={e._id}>
                 {e.title}
                 <img style={{width: '100px', height: '100px'}} src={e.images[0].path} alt="event image"/>
                 <button onClick={() => eventsStore.deleteEvent(e._id)}>delete event</button>

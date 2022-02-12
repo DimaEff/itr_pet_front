@@ -21,3 +21,6 @@ export interface ILikeOrReport {
     uid: string;
     eid: string;
 }
+
+export const eventFilters = ['byLikes', 'validDate'] as const;
+export type EventFilters = typeof eventFilters[number];

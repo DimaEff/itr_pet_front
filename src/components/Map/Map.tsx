@@ -15,6 +15,7 @@ interface MapProps {
 }
 
 const Map: FC<MapProps> = observer(({disabled}) => {
+    const {filteredEvents} = eventsStore;
     const {mapCenter, setMapCenter} = appStore;
 
     const theme = useTheme();
@@ -49,7 +50,7 @@ const Map: FC<MapProps> = observer(({disabled}) => {
             >
                 {
                     mapRef &&
-                    eventsStore.events.map(e => <EventMarker
+                    filteredEvents.map(e => <EventMarker
                         key={e._id}
                         event={e}
                         lat={e.lat}
