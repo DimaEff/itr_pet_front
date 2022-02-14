@@ -8,8 +8,8 @@ class EventTypesAPI {
         return axios.get(this.baseURL);
     }
 
-    createEventType(dto: FormData) {
-        return axios.post(this.baseURL, dto);
+    createEventType(fd: FormData) {
+        return axios.post(this.baseURL, fd);
     }
 
     delete(id: string) {

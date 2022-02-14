@@ -23,7 +23,6 @@ const UserMenu: FC<UserProfileProps> = () => {
     }
 
     const handleClose = () => {
-        console.log('close');
         setAnchorElUser(null);
     }
 

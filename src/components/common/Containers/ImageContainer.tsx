@@ -51,16 +51,17 @@ const ImageContainer: FC<ImageContainerProps> = (
                 open={open}
                 onClose={() => setOpen(false)}
             >
-                <Box sx={{
-                    maxWidth: '95%',
-                    maxHeight: '95%',
-                    minWidth: '320px',
-                    'img': {
-                        width: '100%',
-                        height: '100%',
-                    }
-                }}>
-                    <img src={src} alt={'image'}/>
+                <Box
+                    sx={{
+                        maxWidth: '95%',
+                        maxHeight: '95%',
+                        minWidth: '320px',
+                        'img': {
+                            width: '100%',
+                            height: '100%',
+                        }
+                    }}>
+                    <img src={src} alt={'full image'}/>
                 </Box>
             </CenteredModal>
         </>

@@ -1,13 +1,17 @@
 import axios, {AxiosResponse} from 'axios';
 
-import {UpdateUserDto} from './dto/updateUser.dto';
+import {User} from "@auth0/auth0-react";
 
 
 class UserAPI {
-    private readonly baseURL = process.env.REACT_APP_SERVER_URL + '/user';
+    private readonly baseURL = process.env.REACT_APP_SERVER_URL + '/profile';
 
-    updateUser(dto: UpdateUserDto): Promise<AxiosResponse<any>> {
-        return axios.put(this.baseURL + '/update', dto);
+    updateUser(fd: User): Promise<AxiosResponse<any>> {
+        return axios.put(this.baseURL + '/update', fd);
+    }
+
+    updatePicture(fd: FormData): Promise<AxiosResponse<any>> {
+        return axios.put(this.baseURL + '/picture', fd);
     }
 
     deleteUser(): Promise<AxiosResponse<any>> {

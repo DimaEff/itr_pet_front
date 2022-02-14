@@ -1,8 +1,8 @@
 import React, {FC, useEffect, useState} from 'react';
 import {useDropzone} from 'react-dropzone';
-import {Box} from '@mui/material';
+import {Box, Theme} from '@mui/material';
+import {SxProps} from "@mui/system";
 import DownloadForOfflineRoundedIcon from "@mui/icons-material/DownloadForOfflineRounded";
-import {Image} from "@mui/icons-material";
 import {ImageContainer} from "../Containers";
 
 
@@ -16,6 +16,7 @@ interface FileInputProps {
     fileTypes?: FileTypes | FileTypes[];
     maxFiles?: number;
     preview?: string | null;
+    sx?: SxProps<Theme>;
 }
 
 const FileInput: FC<FileInputProps> = (
@@ -27,6 +28,7 @@ const FileInput: FC<FileInputProps> = (
         fileTypes,
         maxFiles,
         preview,
+        sx,
     }) => {
 
     const {getRootProps, getInputProps, acceptedFiles, isDragActive} = useDropzone({
@@ -76,7 +78,8 @@ const FileInput: FC<FileInputProps> = (
                     cursor: `pointer`,
                     'input': {
                         zIndex: 2,
-                    }
+                    },
+                    ...sx
                 }}
                 onMouseEnter={() => setOpen(true)}
                 onMouseLeave={() => setOpen(false)}

@@ -7,6 +7,7 @@ const CenteredModal: FC<ModalProps> = ({children, ...props}) => {
         <Modal {...props}>
             <Box
                 sx={{
+
                     '>*': {
                         position: 'absolute',
                         top: '50%',

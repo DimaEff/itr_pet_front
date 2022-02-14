@@ -6,6 +6,7 @@ import {eventsStore, IEvent} from "../../../store";
 import {IconButton} from "../../common/Buttons";
 import {ConfirmDialog, ConfirmDialogProps} from "../../common/Modals";
 import {useAuth0} from "@auth0/auth0-react";
+import {useRoles} from "../../../hooks";
 
 
 interface EventMenuProps {
@@ -14,9 +15,10 @@ interface EventMenuProps {
 
 const EventMenu: FC<EventMenuProps> = ({event}) => {
     const {report} = eventsStore;
-    const {_id, reports} = event;
+    const {_id, reports, uid} = event;
 
     const {user} = useAuth0();
+    const {isAdmin} = useRoles();
 
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const openMenu = Boolean(anchorEl);
@@ -81,8 +83,7 @@ const EventMenu: FC<EventMenuProps> = ({event}) => {
                 }}
             >
                 <MenuItem disabled={!user?.sub || reports.includes(user.sub)} onClick={handleOpenReportConfirm}>Report</MenuItem>
-                {/*{uid === user?.sub && <MenuItem onClick={handleOpenDeleteConfirm}>Delete</MenuItem>}*/}
-                <MenuItem onClick={handleOpenDeleteConfirm}>Delete</MenuItem>
+                {(isAdmin || uid === user?.sub) && <MenuItem onClick={handleOpenDeleteConfirm}>Delete</MenuItem>}
             </Menu>
         </>
     )

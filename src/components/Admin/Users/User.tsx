@@ -1,10 +1,12 @@
 import React, {FC} from 'react';
-import {User as A0User} from '@auth0/auth0-react'
+import {useAuth0, User as A0User} from '@auth0/auth0-react'
 import {Box, Button, ButtonGroup, Card, CardContent, CardMedia, Tooltip, Typography} from "@mui/material";
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import BlockRoundedIcon from '@mui/icons-material/BlockRounded';
 import AdminPanelSettingsRoundedIcon from '@mui/icons-material/AdminPanelSettingsRounded';
 import {formatDistanceToNow, parseISO} from 'date-fns';
+
+import {adminStore} from "../../../store";
 import {ImageContainer} from "../../common/Containers";
 
 
@@ -13,7 +15,19 @@ interface UserProps {
 }
 
 const User: FC<UserProps> = ({user}) => {
-    const {picture, email, name, created_at} = user;
+    const {deleteUser, setIsBlockedUser, assignRoles} = adminStore;
+    const {picture, email, name, created_at, sub} = user;
+
+    const handleMakeAdmin = async () => {
+        if (!sub) {
+            return;
+        }
+
+        await assignRoles({
+            uid: sub,
+            roles: ['admin', 'testAdmin'],
+        });
+    }
 
     return (
         <Card

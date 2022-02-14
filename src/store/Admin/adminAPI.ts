@@ -1,7 +1,8 @@
 import axios, {AxiosResponse} from 'axios';
 
-import {AdminUpdateUserDto} from './dto/adminUpdateUser.dto';
-import {AdminBlockUserDto} from './dto/adminBlockUser.dto';
+import {AdminUpdateUserDto} from './dto/admin-update-user.dto';
+import {AdminBlockUserDto} from './dto/admin-block-user.dto';
+import {AdminAssignRolesDto} from "./dto/admin-assign-roles.dto";
 
 
 // Ощущение, что с admin эндпоинтами я немного накосячил на сервере + уже тут как следствие
@@ -27,8 +28,11 @@ class AdminAPI {
         return axios.delete(this.baseUsersURL + `/${uid}`);
     }
 
+    assignRoles(dto: AdminAssignRolesDto): Promise<AxiosResponse<any>>{
+        return axios.post(this.baseUsersURL + '/roles', )
+    }
+
     getAllRoles(): Promise<AxiosResponse<any>> {
-        // return this.rolesInstance.get('');
         return axios.get(this.baseRolesURL);
     }
 }

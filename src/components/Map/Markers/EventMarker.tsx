@@ -1,6 +1,6 @@
 import React, {FC, useState} from 'react';
 import {Position} from "google-map-react";
-import {Icon, Paper} from "@mui/material";
+import {Icon, Modal, Paper} from "@mui/material";
 
 import {IEvent} from '../../../store';
 import EventIcon from "./EventIcon";

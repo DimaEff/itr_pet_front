@@ -45,10 +45,10 @@ const AddEventModal: FC<AddEventProps> = ({open, setOpen}) => {
 
         const files: File[] = images.map(i => i[1]);
         createEvent({...data, ...coords, files, uid: user.sub});
-        setOpen(false);
+        handleClose();
     }
 
-    const onClose = () => {
+    const handleClose = () => {
         setImages([]);
         setOpen(false);
     }
@@ -58,7 +58,7 @@ const AddEventModal: FC<AddEventProps> = ({open, setOpen}) => {
     return (
         <CenteredModal
             open={open}
-            onClose={onClose}
+            onClose={handleClose}
         >
             <Card
                 sx={{

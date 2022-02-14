@@ -1,7 +1,7 @@
 import {v4} from 'uuid';
 import {FieldErrors} from "react-hook-form/dist/types/errors";
 import {parseISO} from "date-fns";
-import {IEvent} from "../store";
+import {User} from "@auth0/auth0-react";
 
 
 export const convertToBase64 = (file: File): Promise<any> => {
@@ -39,6 +39,7 @@ interface ErrorAndMessage {
     error: boolean;
     helperText?: string;
 }
+
 export function getMuiErrorAndMessageCreator<T>(errors: FieldErrors) {
     return (field: keyof T, withoutHelperText = false): ErrorAndMessage => {
         const res: ErrorAndMessage = {error: false};
@@ -60,4 +61,18 @@ export function stringNameOf<T>(name: keyof T): string {
 export const isoToDateString = (date: string): string => {
     const parsedDate = parseISO(date);
     return `${parsedDate.toDateString()} ${parsedDate.toTimeString().slice(0, 5)}`;
+}
+
+export const compareUsersData = (oldData: User, newData: User): User | null => {
+    let userData: User = {};
+
+    Object.keys(newData).forEach(k => {
+        if (oldData[k] !== newData[k]) {
+            userData[k] = newData[k];
+        }
+    });
+
+    return Object.keys(userData).length > 0 ?
+        userData :
+        null;
 }

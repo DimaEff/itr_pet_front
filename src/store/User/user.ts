@@ -1,21 +1,28 @@
 import {makeAutoObservable} from "mobx";
+import {serialize} from "object-to-formdata";
+import {User as A0User} from '@auth0/auth0-react';
 
-import userApi from './userAPI';
-import {UpdateUserDto} from './dto/updateUser.dto';
-
+import userAPI from "./userAPI";
 
 class User {
     constructor() {
         makeAutoObservable(this);
     }
 
-    async updateUser(dto: UpdateUserDto): Promise<any> {
-        const res = await userApi.updateUser(dto);
+    async updateUser(dto: A0User): Promise<any> {
+        const res = await userAPI.updateUser(dto);
+        console.log(res.data);
+        return res.data;
+    }
+
+    async updatePicture(picture: File): Promise<any> {
+        const fd = serialize({picture});
+        const res = await userAPI.updatePicture(fd);
         return res.data;
     }
 
     async deleteUser(): Promise<any> {
-        const res = await userApi.deleteUser();
+        const res = await userAPI.deleteUser();
         return res.data;
     }
 }

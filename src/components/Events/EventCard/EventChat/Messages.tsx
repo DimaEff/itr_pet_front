@@ -20,6 +20,7 @@ const Messages: FC<MessagesProps> = observer(({open}) => {
     const messagesEnd = useRef<HTMLElement>();
     const handleScrollToBottom = () => messagesEnd.current?.scrollIntoView({behavior: 'smooth'});
 
+    // это очень плохо, я не знаю, как это работает. надеюсь, никто не увидит
     useEffect(() => {
         const handleScroll = () => {
             const c = container.current;
@@ -29,9 +30,9 @@ const Messages: FC<MessagesProps> = observer(({open}) => {
 
             const checkScroll = () => (c.scrollHeight - 360 - c.scrollTop) <= 200;
 
-            if (checkScroll()) {
+            if (!isNear && checkScroll()) {
                 setIsNear(true);
-            } else if (!checkScroll()) {
+            } else if (isNear && !checkScroll()) {
                 setIsNear(false);
             }
         }

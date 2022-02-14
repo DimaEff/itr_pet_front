@@ -2,8 +2,9 @@ import {makeAutoObservable} from 'mobx';
 import {User} from '@auth0/auth0-react'
 
 import adminAPI from "./adminAPI";
-import {AdminUpdateUserDto} from './dto/adminUpdateUser.dto';
-import {AdminBlockUserDto} from './dto/adminBlockUser.dto';
+import {AdminUpdateUserDto} from './dto/admin-update-user.dto';
+import {AdminBlockUserDto} from './dto/admin-block-user.dto';
+import {AdminAssignRolesDto} from './dto/admin-assign-roles.dto';
 
 
 class Admin {
@@ -34,7 +35,12 @@ class Admin {
         return res.data;
     }
 
-    setRoles = async (): Promise<any> => {
+    assignRoles = async (dto: AdminAssignRolesDto): Promise<void> => {
+        await adminAPI.assignRoles(dto);
+        console.log('assign roles');
+    }
+
+    fetchRoles = async (): Promise<any> => {
         const res = await adminAPI.getAllRoles();
         this.roles = res.data;
     }

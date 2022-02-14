@@ -29,7 +29,7 @@ const lorem = new LoremIpsum({
 const EventCard: FC<EventProps> = forwardRef(({event, withoutChat, withMapPointer}, ref) => {
 
     return (
-        <>
+        <div id={'test'}>
             <Card sx={{position: 'relative', width: 345}}>
                 <Header event={event}/>
                 <Media event={event}/>
@@ -47,7 +47,7 @@ const EventCard: FC<EventProps> = forwardRef(({event, withoutChat, withMapPointe
                 <Actions withMapPointer={!!withMapPointer} event={event}/>
                 {!withoutChat && <EventChat eventId={event._id}/>}
             </Card>
-        </>
+        </div>
     );
 });
 

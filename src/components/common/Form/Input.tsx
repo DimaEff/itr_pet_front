@@ -8,7 +8,7 @@ interface InputProps extends BaseTextFieldProps {
 
 const Input: FC<InputProps> = forwardRef(({children, register, ...props}, ref) => {
 
-    return <TextField variant={'outlined'} {...register} {...props}/>
+    return <TextField variant={'outlined'} autoComplete={'off'} {...register} {...props}/>
 });
 
 export default Input;
