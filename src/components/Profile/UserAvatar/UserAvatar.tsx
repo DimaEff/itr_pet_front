@@ -1,21 +1,18 @@
 import React, {FC, useState} from 'react';
 import {Avatar, Box} from "@mui/material";
 import {useAuth0} from "@auth0/auth0-react";
-import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
-import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
-
-import {ContainerAbove} from "../common/Containers";
-import {ImageWithPreview} from "../../types";
-import {FileInput} from "../common/Form";
-import {getFileUrl} from "../../utils/helper";
-import {userStore} from "../../store";
-import {Loader} from "../common/Loader";
+import {ImageWithPreview} from "../../../types";
+import {getFileUrl} from "../../../utils/helper";
+import {userStore} from "../../../store";
+import {Loader} from "../../common/Loader";
+import PictureDownload from "./PictureDownload";
 
 
 interface UserAvatarProps {
+    disableEdit: boolean;
 }
 
-const UserAvatar: FC<UserAvatarProps> = () => {
+const UserAvatar: FC<UserAvatarProps> = ({disableEdit}) => {
     const {updatePicture} = userStore;
     const {user} = useAuth0();
 
@@ -54,18 +51,16 @@ const UserAvatar: FC<UserAvatarProps> = () => {
                 }}
             >
                 <Avatar src={preview ? preview : user?.picture} alt={'user avatar'} sx={{width: px, height: px}}/>
-                <ContainerAbove sx={{justifyContent: 'center', alignItems: 'center'}}>
-                    {
-                        preview ?
-                            <Box display={'flex'} justifyContent={'center'} alignItems={'center'}>
-                                <DoneRoundedIcon fontSize={'large'} onClick={handleUpdatePicture}/>
-                                <DeleteRoundedIcon fontSize={'large'} onClick={() => setImage(null)}/>
-                            </Box> :
-                            <FileInput sx={{borderRadius: '50%'}} name={'picture'} handleLoad={handleLoad}/>
-                    }
-                </ContainerAbove>
+                {
+                    disableEdit || <PictureDownload
+                        preview={preview}
+                        handleUpdatePicture={handleUpdatePicture}
+                        handleLoad={handleLoad}
+                        setImage={setImage}
+                    />
+                }
             </Box>
-            {loading && <Loader />}
+            {loading && <Loader/>}
         </>
     );
 };

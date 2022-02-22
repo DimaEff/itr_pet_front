@@ -5,7 +5,6 @@ import {useAuth0} from "@auth0/auth0-react";
 
 import {ProfileEdit, ProfileInfo, UserAvatar} from "../components/Profile";
 import {IconButton} from "../components/common/Buttons";
-import {ImageWithPreview} from "../types";
 
 
 const Profile = () => {
@@ -24,7 +23,7 @@ const Profile = () => {
 
     return (
         <Stack spacing={1} p={1} width={250}>
-            <UserAvatar />
+            <UserAvatar disableEdit={disableEdit}/>
             <Box width={'100%'} display={'flex'} justifyContent={'flex-end'}>
                 {
                     disableEdit ?

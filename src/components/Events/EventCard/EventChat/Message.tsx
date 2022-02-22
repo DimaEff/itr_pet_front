@@ -26,7 +26,7 @@ const Message: FC<MessageProps> = ({message}) => {
             }}
         >
             <Typography>
-                {message._id}
+                {message.uid}
             </Typography>
             <Typography>
                 {message.message}

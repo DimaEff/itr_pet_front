@@ -1,7 +1,8 @@
-import {v4} from 'uuid';
-import {FieldErrors} from "react-hook-form/dist/types/errors";
-import {parseISO} from "date-fns";
-import {User} from "@auth0/auth0-react";
+import { v4 } from 'uuid';
+import { FieldErrors } from "react-hook-form/dist/types/errors";
+import { parseISO } from "date-fns";
+import { User } from "@auth0/auth0-react";
+import { keys } from "ts-transformer-keys";
 
 
 export const convertToBase64 = (file: File): Promise<any> => {
@@ -75,4 +76,23 @@ export const compareUsersData = (oldData: User, newData: User): User | null => {
     return Object.keys(userData).length > 0 ?
         userData :
         null;
+}
+
+
+interface Props {
+    id: string;
+    name: string;
+    age: number;
+}
+
+const getValueByType = (nameOfType: string): any => {
+
+}
+
+export function getObjectByType<T extends object>() {
+    const res: any = {};
+    const objectKeys = keys<T>();
+    type Test = typeof objectKeys[number];
+
+    // objectKeys.forEach((k, i) => res[k] = getValueByType(objectTypes[i]));
 }
