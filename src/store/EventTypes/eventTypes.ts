@@ -6,14 +6,14 @@ import {IEventType} from "./types";
 import {serialize} from "object-to-formdata";
 
 
-class EventTypes {
+export class EventTypes {
     eventTypes: IEventType[] = [];
 
     constructor() {
         makeAutoObservable(this);
     }
 
-    async fetchEventTypes() {
+    fetchEventTypes = async () => {
         const res = await eventTypesAPI.getAllEventTypes();
         runInAction(() => {
             this.eventTypes = res.data;
@@ -30,6 +30,10 @@ class EventTypes {
     async deleteEventType(id: string) {
         await eventTypesAPI.delete(id);
         await this.fetchEventTypes();
+    }
+
+    getEventsTypeById = (id: string): IEventType | undefined => {
+        return this.eventTypes.find(et => et._id === id);
     }
 }
 

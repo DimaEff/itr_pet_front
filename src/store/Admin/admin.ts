@@ -7,7 +7,7 @@ import {AdminBlockUserDto} from './dto/admin-block-user.dto';
 import {AdminAssignRolesDto} from './dto/admin-assign-roles.dto';
 
 
-class Admin {
+export class Admin {
     users: User[] = [];
     roles: any[] = [];
 

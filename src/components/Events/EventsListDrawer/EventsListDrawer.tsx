@@ -1,27 +1,16 @@
 import React from 'react';
-import {Box, Stack, SwipeableDrawer, ToggleButton, ToggleButtonGroup, Typography} from "@mui/material";
+import {Box, Stack, SwipeableDrawer} from "@mui/material";
 import {observer} from "mobx-react-lite";
-import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 
-import {appStore, EventFilters, eventFilters, eventsStore} from "../../store";
-import EventCard from './EventCard/EventCard';
+import {appStore, eventsStore} from "../../../store";
+import EventCard from '../EventCard/EventCard';
+import Filters from "./Filters";
 
 
 const EventsListDrawer = observer(() => {
-    const {filteredEvents, filters, setFilters} = eventsStore;
+    const {filteredEvents} = eventsStore;
     const {drawerOpen, setDrawerOpen} = appStore;
 
-    const handleFilter = (
-        event: React.MouseEvent<HTMLElement>,
-        newFormats: EventFilters[],
-    ) => {
-        setFilters(newFormats);
-    };
-
-    const filtersChildren: {[keys in EventFilters]: React.ReactNode} = {
-        byLikes: <FavoriteRoundedIcon />,
-        validDate: <Typography>NOW</Typography>
-    };
 
     return (
         <>
@@ -40,17 +29,7 @@ const EventsListDrawer = observer(() => {
                             width: '100%',
                         }}
                     >
-                        <ToggleButtonGroup
-                            value={filters}
-                            onChange={handleFilter}
-                            aria-label="text formatting"
-                        >
-                            {
-                                eventFilters.map(f => <ToggleButton key={f} value={f} aria-label={f}>
-                                    {filtersChildren[f]}
-                                </ToggleButton>)
-                            }
-                        </ToggleButtonGroup>
+                        <Filters />
                     </Box>
                     <Box>
                         <Stack spacing={1} width={345}>
